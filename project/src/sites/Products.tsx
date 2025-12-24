@@ -2,13 +2,18 @@ import {
   Card,
   CardContent,
   Divider,
+  Fade,
   IconButton,
   Rating,
-  Stack,
+  Tooltip,
+  tooltipClasses,
   Typography,
+  Zoom,
+  type TooltipProps,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useEffect, useState } from "react";
+import styled from "@emotion/styled";
 
 interface ShoppingCartItems {
   inCartItems: number;
@@ -52,42 +57,70 @@ function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
       .catch((err) => console.error(err));
   }, []);
 
+  const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: "#f5f5f9",
+      color: "#000000",
+      maxWidth: 220,
+      fontSize: "medium",
+      border: "2px solid #dadde9",
+    },
+  }));
+
   return (
-    <div className="flex flex-wrap gap-10 items-center justify-center">
+    <div className="flex flex-wrap gap-10 items-center justify-center p-5">
       {products.map((product) => (
-        <Card variant="outlined" sx={{ maxWidth: 360 }}>
-          <CardContent sx={{ p: 2 }}>
-            <div className="flex flex-row items-center justify-between gap-5 mb-2">
-              <Typography gutterBottom variant="h5" component="div">
-                {product.title}
-              </Typography>
-              <Typography gutterBottom variant="h6" component="div">
-                {product.price}$
-              </Typography>
-            </div>
-            <Rating name="read-only" value={product.rating.rate} readOnly />(
-            {product.rating.count})
-            <Divider />
-            <img
-              src={product.image}
-              alt={product.title}
-              className="w-80 h-80 object-contain my-5 mb-5"
-            />
-            <Divider />
-            <div className="flex flex-row items-center justify-between gap-5 mb-2">
-              <Typography gutterBottom variant="h6" component="div">
-                {product.category}
-              </Typography>
-              <IconButton
-                onClick={() => setInCartItems((prev) => prev + 1)}
-                color="primary"
-                aria-label="add to shopping cart"
-              >
-                <AddShoppingCartIcon />
-              </IconButton>
-            </div>
-          </CardContent>
-        </Card>
+        <HtmlTooltip
+          title={product.description}
+          placement="right"
+          slots={{
+            transition: Zoom,
+          }}
+          slotProps={{
+            transition: { timeout: 600 },
+          }}
+        >
+          <Card variant="outlined" sx={{ maxWidth: 360 }}>
+            <CardContent sx={{ p: 2 }}>
+              <div className="flex flex-row items-center justify-between gap-5">
+                <Typography gutterBottom variant="h5" component="div">
+                  {product.title}
+                </Typography>
+                <Typography gutterBottom variant="h6" component="div">
+                  {product.price}$
+                </Typography>
+              </div>
+              <Rating
+                name="read-only"
+                value={product.rating.rate}
+                readOnly
+                className="mb-3"
+              />
+              ({product.rating.count})
+              <Divider />
+              <img
+                src={product.image}
+                alt={product.title}
+                className="w-80 h-80 object-contain my-5 mb-5"
+              />
+              <Divider />
+              <div className="flex flex-row items-center justify-between gap-5 mb-2">
+                <Typography gutterBottom variant="h6" component="div">
+                  {product.category}
+                </Typography>
+                <IconButton
+                  onClick={() => setInCartItems((prev) => prev + 1)}
+                  color="primary"
+                  aria-label="add to shopping cart"
+                >
+                  <AddShoppingCartIcon />
+                </IconButton>
+              </div>
+            </CardContent>
+          </Card>
+        </HtmlTooltip>
       ))}
     </div>
   );
