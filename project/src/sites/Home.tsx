@@ -2,16 +2,28 @@ import { Button, Card, CardContent, Typography } from "@mui/material";
 
 function HomePage() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Card className="p-6" color="background">
-        <CardContent className="flex flex-col gap-4 items-center">
-          <Typography variant="h5" color="textPrimary">
-            MUI + Tailwind working
+    <div className="flex justify-center w-screen h-screen">
+      <Card
+        className="flex justify-center p-10 w-screen h-2/4"
+        sx={{ backgroundColor: "primary.main" }}
+      >
+        <CardContent className="flex flex-col gap-10">
+          <Typography
+            className="flex justify-center"
+            variant="h3"
+            color="textSecondary"
+          >
+            NAME OF THE SHOP
           </Typography>
-
-          <Button variant="contained" color="primary">
-            Works
-          </Button>
+          <Typography
+            className="flex justify-center"
+            variant="h6"
+            color="textSecondary"
+          >
+            We are the best online shop that u can imagine!
+            <br /> We sell the best quality products!
+            <br /> All of them are handmade and eco-friendly!
+          </Typography>
         </CardContent>
       </Card>
     </div>
