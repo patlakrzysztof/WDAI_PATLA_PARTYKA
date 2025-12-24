@@ -3,7 +3,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 interface ShoppingCartItems {
   inCartItems: number;
-  setInCartItems: React.Dispatch<React.SetStateAction<number>>;
+  setInCartItems: (value: number | ((prev: number) => number)) => void;
 }
 
 function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {

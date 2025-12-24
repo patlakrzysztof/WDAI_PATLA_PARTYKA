@@ -1,6 +1,6 @@
 interface ShoppingCartItems {
   inCartItems: number;
-  setInCartItems: React.Dispatch<React.SetStateAction<number>>;
+  setInCartItems: (value: number | ((prev: number) => number)) => void;
 }
 
 function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartItems) {
