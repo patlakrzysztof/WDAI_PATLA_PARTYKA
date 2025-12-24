@@ -1,19 +1,22 @@
-import { Button, Card, CardContent, Typography } from "@mui/material";
-import "./App.css";
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import HomePage from "./sites/Home";
+import ShoppingCart from "./sites/ShoppingCart";
+import Products from "./sites/Products";
 
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <Card className="p-6">
-        <CardContent className="flex flex-col gap-4 items-center">
-          <Typography variant="h5">MUI + Tailwind working</Typography>
+    <BrowserRouter>
+      <nav className="px-4 py-2">
+        <Link to="/">Strona Główna</Link> | <Link to="/koszyk">Koszyk</Link> |{" "}
+        <Link to="/produkty">Produkty</Link>
+      </nav>
 
-          <Button variant="contained" color="primary">
-            Works
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/koszyk" element={<ShoppingCart />} />
+        <Route path="/produkty" element={<Products />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

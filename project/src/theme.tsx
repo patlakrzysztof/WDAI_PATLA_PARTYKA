@@ -2,12 +2,22 @@ import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
-    mode: "light", // później łatwo zmienisz na dark
+    mode: "light",
     primary: {
-      main: "#2563eb", // tailwind blue-600
+      main: "#243E36", //Dark Slate Gray
     },
     secondary: {
-      main: "#9333ea", // purple-600
+      main: "#7CA982", //Muted Teal
+    },
+    background: {
+      default: "#F1F7ED", // Mint Cream
+    },
+    text: {
+      primary: "#000000", //black
+      secondary: "#FFFFFF", //white
+    },
+    action: {
+      active: "#C2A83E", // Old Gold
     },
   },
   typography: {
