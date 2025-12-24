@@ -5,7 +5,7 @@ import "./index.css";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import HomeIcon from "@mui/icons-material/Home";
-import { Badge } from "@mui/material";
+import { Badge, Chip } from "@mui/material";
 
 // sites
 import HomePage from "./sites/Home";
