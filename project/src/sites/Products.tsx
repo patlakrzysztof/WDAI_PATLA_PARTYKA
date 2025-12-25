@@ -72,6 +72,16 @@ function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
 
   return (
     <div className="flex flex-wrap gap-10 items-center justify-center p-5">
+      <Card
+        className="flex justify-center p-10 w-screen h-1/2"
+        sx={{ backgroundColor: "primary.main" }}
+      >
+        <CardContent className="flex flex-col justify-center items-center gap-10">
+          <Typography variant="h3" color="textSecondary">
+            OUR PRODUCTS :
+          </Typography>
+        </CardContent>
+      </Card>
       {products.map((product) => (
         <HtmlTooltip
           title={product.description}

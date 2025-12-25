@@ -1,11 +1,4 @@
-import {
-  Button,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import DiscountIcon from "@mui/icons-material/Discount";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
@@ -24,7 +17,7 @@ function HomePage() {
           <Typography variant="h6" color="textSecondary">
             We are the best online shop that u can imagine!
             <br /> We sell the best quality products!
-            <br /> All of them are handmade and eco-friendly!
+            <br /> All of them are eco-friendly!
           </Typography>
         </CardContent>
       </Card>
