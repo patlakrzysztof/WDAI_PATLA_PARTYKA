@@ -2,7 +2,6 @@ import {
   Card,
   CardContent,
   Divider,
-  Fade,
   IconButton,
   Rating,
   Tooltip,
