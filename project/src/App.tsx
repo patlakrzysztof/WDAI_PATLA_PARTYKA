@@ -5,7 +5,7 @@ import "./index.css";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import HomeIcon from "@mui/icons-material/Home";
-import { Badge, IconButton } from "@mui/material";
+import { Badge, Chip } from "@mui/material";
 
 // sites
 import HomePage from "./sites/Home";
@@ -23,12 +23,12 @@ function App() {
           <Link to="/">
             <HomeIcon />
           </Link>
-          <Link to="/produkty">
+          <Link to="/products">
             <StorefrontIcon />
           </Link>
         </div>
         <div>
-          <Link to="/koszyk">
+          <Link to="/cart">
             <Badge badgeContent={inCartItems} color="primary">
               <ShoppingCartIcon />
             </Badge>
@@ -39,7 +39,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route
-          path="/koszyk"
+          path="/cart"
           element={
             <ShoppingCart
               inCartItems={inCartItems}
@@ -48,7 +48,7 @@ function App() {
           }
         />
         <Route
-          path="/produkty"
+          path="/products"
           element={
             <Products
               inCartItems={inCartItems}
