@@ -14,11 +14,6 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 
-interface ShoppingCartItems {
-  inCartItems: number;
-  setInCartItems: (value: number | ((prev: number) => number)) => void;
-}
-
 interface Product {
   id: number;
   title: string;
@@ -30,6 +25,13 @@ interface Product {
     rate: number;
     count: number;
   };
+}
+
+interface ShoppingCartItems {
+  inCartItems: Set<Product>;
+  setInCartItems: (
+    value: Set<Product> | ((prev: Set<Product>) => Set<Product>)
+  ) => void;
 }
 
 function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
@@ -110,9 +112,21 @@ function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
                   {product.category}
                 </Typography>
                 <IconButton
-                  onClick={() => setInCartItems((prev) => prev + 1)}
+                  onClick={() =>
+                    setInCartItems((prev) => {
+                      if (
+                        [...prev].some(
+                          (inCartProd) => inCartProd.id === product.id
+                        )
+                      ) {
+                        return prev;
+                      }
+                      return new Set(prev).add(product);
+                    })
+                  }
                   color="primary"
                   aria-label="add to shopping cart"
+                  disabled={inCartItems.has(product)}
                 >
                   <AddShoppingCartIcon />
                 </IconButton>

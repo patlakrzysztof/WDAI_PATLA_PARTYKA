@@ -13,8 +13,21 @@ import ShoppingCart from "./sites/ShoppingCart";
 import Products from "./sites/Products";
 import { useState } from "react";
 
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  category: string;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
+}
+
 function App() {
-  const [inCartItems, setInCartItems] = useState(0);
+  const [inCartItems, setInCartItems] = useState<Set<Product>>(new Set());
 
   return (
     <BrowserRouter>
@@ -29,7 +42,7 @@ function App() {
         </div>
         <div>
           <Link to="/cart">
-            <Badge badgeContent={inCartItems} color="primary">
+            <Badge badgeContent={inCartItems.size} color="primary">
               <ShoppingCartIcon />
             </Badge>
           </Link>
