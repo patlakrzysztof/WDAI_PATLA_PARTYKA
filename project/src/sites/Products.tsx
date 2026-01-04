@@ -95,8 +95,8 @@ function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
       product.title.toLowerCase().includes(search.toLowerCase())
     )
     .sort((a, b) => {
-      if (sort === "asc") return a.title.localeCompare(b.title);
-      if (sort === "desc") return b.title.localeCompare(a.title);
+      if (sort === "asc") return a.price - b.price;
+      if (sort === "desc") return b.price - a.price;
       return 0;
     });
 
@@ -157,8 +157,8 @@ function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
             }
           >
             <option value="default">Default</option>
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
+            <option value="asc">Price Ascending</option>
+            <option value="desc">Price Descending</option>
           </NativeSelect>
         </FormControl>
       </div>
