@@ -21,14 +21,35 @@ interface Product {
   };
 }
 
+interface CartItem extends Product {
+  quantity: number;
+}
+
 interface ShoppingCartItems {
-  inCartItems: Set<Product>;
-  setInCartItems: (
-    value: Set<Product> | ((prev: Set<Product>) => Set<Product>)
-  ) => void;
+  inCartItems: Map<number, CartItem>;
+  setInCartItems: React.Dispatch<React.SetStateAction<Map<number, CartItem>>>;
 }
 
 function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartItems) {
+  const handleQuantityChange = (product: CartItem, quantity: number) => {
+    setInCartItems((prev) => {
+      const copy = new Map(prev);
+      const item = copy.get(product.id);
+      if (item) {
+        copy.set(product.id, { ...item, quantity });
+      }
+      return copy;
+    });
+  };
+
+  const handleDelete = (productId: number) => {
+    setInCartItems((prev) => {
+      const copy = new Map(prev);
+      copy.delete(productId);
+      return copy;
+    });
+  };
+
   return (
     <div className="flex flex-wrap gap-10 items-center justify-center p-5">
       <Card
@@ -42,7 +63,7 @@ function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartItems) {
         </CardContent>
       </Card>
       {inCartItems.size > 0 ? (
-        Array.from(inCartItems).map((product) => (
+        Array.from(inCartItems.values()).map((product) => (
           <Card variant="outlined" sx={{ maxWidth: 360 }}>
             <CardContent sx={{ p: 2 }}>
               <div className="flex flex-row items-center justify-between gap-5">
@@ -64,21 +85,18 @@ function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartItems) {
                 <TextField
                   label="Quantity"
                   type="number"
-                  defaultValue={1}
+                  value={product.quantity}
                   id="quantity-input"
                   sx={{ m: 1, width: "10ch" }}
                   color="primary"
                   focused
                   inputProps={{ min: 0, max: 15, step: 1 }}
+                  onChange={(val) =>
+                    handleQuantityChange(product, Number(val.target.value))
+                  }
                 />
                 <IconButton
-                  onClick={() =>
-                    setInCartItems((prev) => {
-                      const copy = new Set(prev);
-                      copy.delete(product);
-                      return copy;
-                    })
-                  }
+                  onClick={() => handleDelete(product.id)}
                   color="primary"
                   aria-label="delete from shopping cart"
                 >

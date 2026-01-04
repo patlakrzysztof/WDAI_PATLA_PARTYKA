@@ -26,8 +26,14 @@ interface Product {
   };
 }
 
+interface CartItem extends Product {
+  quantity: number;
+}
+
 function App() {
-  const [inCartItems, setInCartItems] = useState<Set<Product>>(new Set());
+  const [inCartItems, setInCartItems] = useState<Map<number, CartItem>>(
+    new Map()
+  );
 
   return (
     <BrowserRouter>

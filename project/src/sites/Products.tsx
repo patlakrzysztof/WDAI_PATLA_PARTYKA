@@ -27,11 +27,13 @@ interface Product {
   };
 }
 
+interface CartItem extends Product {
+  quantity: number;
+}
+
 interface ShoppingCartItems {
-  inCartItems: Set<Product>;
-  setInCartItems: (
-    value: Set<Product> | ((prev: Set<Product>) => Set<Product>)
-  ) => void;
+  inCartItems: Map<number, CartItem>;
+  setInCartItems: React.Dispatch<React.SetStateAction<Map<number, CartItem>>>;
 }
 
 function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
@@ -69,6 +71,18 @@ function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
       border: "2px solid #dadde9",
     },
   }));
+
+  const addToCart = (product: Product) => {
+    setInCartItems((prev) => {
+      const copy = new Map(prev);
+      if (copy.has(product.id)) {
+        return copy;
+      } else {
+        copy.set(product.id, { ...product, quantity: 1 });
+        return copy;
+      }
+    });
+  };
 
   return (
     <div className="flex flex-wrap gap-10 items-center justify-center p-5">
@@ -122,21 +136,10 @@ function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
                   {product.category}
                 </Typography>
                 <IconButton
-                  onClick={() =>
-                    setInCartItems((prev) => {
-                      if (
-                        [...prev].some(
-                          (inCartProd) => inCartProd.id === product.id
-                        )
-                      ) {
-                        return prev;
-                      }
-                      return new Set(prev).add(product);
-                    })
-                  }
+                  onClick={() => addToCart(product)}
                   color="primary"
                   aria-label="add to shopping cart"
-                  disabled={inCartItems.has(product)}
+                  disabled={inCartItems.has(product.id)}
                 >
                   <AddShoppingCartIcon />
                 </IconButton>
