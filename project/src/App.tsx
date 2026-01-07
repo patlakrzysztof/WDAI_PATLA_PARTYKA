@@ -86,7 +86,16 @@ function App() {
             />
           }
         />
-        <Route path="/products/:productId" element={<ProductPage />} />
+        <Route
+          path="/products/:productId"
+          element={
+            <ProductPage
+              inCartItems={inCartItems}
+              setInCartItems={setInCartItems}
+              products={products}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
