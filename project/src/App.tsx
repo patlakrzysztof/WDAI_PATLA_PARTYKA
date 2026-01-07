@@ -87,7 +87,7 @@ function App() {
           }
         />
         <Route
-          path="/products/:productId"
+          path="/products/:productName"
           element={
             <ProductPage
               inCartItems={inCartItems}

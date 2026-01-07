@@ -25,8 +25,18 @@ function ProductPage({
   setInCartItems,
   products,
 }: ProductPageProps) {
-  const { productId } = useParams();
-  const product = products.find((product) => String(product.id) === productId);
+  const { productName } = useParams();
+
+  const slugify = (text: string) =>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
+
+  const product = products.find(
+    (product) => slugify(product.title) === productName
+  );
   const [quantity, setQuantity] = useState<number>(0);
 
   const addToCart = (product: Product) => {

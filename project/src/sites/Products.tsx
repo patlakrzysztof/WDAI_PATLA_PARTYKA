@@ -67,6 +67,13 @@ function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
       return 0;
     });
 
+  const slugify = (text: string) =>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
+
   return (
     <div>
       <Card
@@ -142,7 +149,7 @@ function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
             }}
             key={product.id}
           >
-            <Link to={`/products/${product.id}`}>
+            <Link to={`/products/${slugify(product.title)}`}>
               <Card variant="outlined" sx={{ maxWidth: 360 }}>
                 <CardContent sx={{ p: 2 }}>
                   <div className="flex flex-row items-center justify-between gap-5">
