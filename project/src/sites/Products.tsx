@@ -31,7 +31,9 @@ interface ProductsProps {
 
 function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<"default" | "asc" | "desc">("default");
+  const [sort, setSort] = useState<
+    "default" | "asc" | "desc" | "asc-rate" | "desc-rate"
+  >("default");
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -64,6 +66,8 @@ function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
     .sort((a, b) => {
       if (sort === "asc") return a.price - b.price;
       if (sort === "desc") return b.price - a.price;
+      if (sort === "asc-rate") return a.rating.rate - b.rating.rate;
+      if (sort === "desc-rate") return b.rating.rate - a.rating.rate;
       return 0;
     });
 
@@ -133,6 +137,8 @@ function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
             <option value="default">Default</option>
             <option value="asc">Price Ascending</option>
             <option value="desc">Price Descending</option>
+            <option value="asc-rate">Rating Ascending</option>
+            <option value="desc-rate">Rating Descending</option>
           </NativeSelect>
         </FormControl>
       </div>
