@@ -17,6 +17,7 @@ import {
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import styled from "@emotion/styled";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 //types
 import type { Product } from "../types";
@@ -139,46 +140,49 @@ function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
             slotProps={{
               transition: { timeout: 600 },
             }}
+            key={product.id}
           >
-            <Card variant="outlined" sx={{ maxWidth: 360 }}>
-              <CardContent sx={{ p: 2 }}>
-                <div className="flex flex-row items-center justify-between gap-5">
-                  <Typography gutterBottom variant="h5" component="div">
-                    {product.title}
-                  </Typography>
-                  <Typography gutterBottom variant="h6" component="div">
-                    {product.price}$
-                  </Typography>
-                </div>
-                <Rating
-                  name="read-only"
-                  value={product.rating.rate}
-                  readOnly
-                  className="mb-3"
-                />
-                ({product.rating.count})
-                <Divider />
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-80 h-80 object-contain my-5 mb-5"
-                />
-                <Divider />
-                <div className="flex flex-row items-center justify-between gap-5 mb-2">
-                  <Typography gutterBottom variant="h6" component="div">
-                    {product.category}
-                  </Typography>
-                  <IconButton
-                    onClick={() => addToCart(product)}
-                    color="primary"
-                    aria-label="add to shopping cart"
-                    disabled={inCartItems.has(product.id)}
-                  >
-                    <AddShoppingCartIcon />
-                  </IconButton>
-                </div>
-              </CardContent>
-            </Card>
+            <Link to={`/products/${product.id}`}>
+              <Card variant="outlined" sx={{ maxWidth: 360 }}>
+                <CardContent sx={{ p: 2 }}>
+                  <div className="flex flex-row items-center justify-between gap-5">
+                    <Typography gutterBottom variant="h5" component="div">
+                      {product.title}
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div">
+                      {product.price}$
+                    </Typography>
+                  </div>
+                  <Rating
+                    name="read-only"
+                    value={product.rating.rate}
+                    readOnly
+                    className="mb-3"
+                  />
+                  ({product.rating.count})
+                  <Divider />
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="w-80 h-80 object-contain my-5 mb-5"
+                  />
+                  <Divider />
+                  <div className="flex flex-row items-center justify-between gap-5 mb-2">
+                    <Typography gutterBottom variant="h6" component="div">
+                      {product.category}
+                    </Typography>
+                    <IconButton
+                      onClick={() => addToCart(product)}
+                      color="primary"
+                      aria-label="add to shopping cart"
+                      disabled={inCartItems.has(product.id)}
+                    >
+                      <AddShoppingCartIcon />
+                    </IconButton>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </HtmlTooltip>
         ))}
       </div>

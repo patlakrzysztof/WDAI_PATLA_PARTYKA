@@ -1,5 +1,6 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import "./index.css";
+import { useEffect, useState } from "react";
 
 //icons
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -12,7 +13,6 @@ import HomePage from "./sites/Home";
 import ShoppingCart from "./sites/ShoppingCart";
 import Products from "./sites/Products";
 import ProductPage from "./sites/ProductPage";
-import { useEffect, useState } from "react";
 
 //types
 import type { Product } from "./types";

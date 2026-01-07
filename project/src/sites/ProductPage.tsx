@@ -74,11 +74,11 @@ function ProductPage({
               alt={product.title}
               className="w-80 h-80 object-contain mb-5"
             />
-            <div>
+            <div className="flex flex-col justify-between">
               <Typography gutterBottom variant="h6" component="div">
                 {product.description}
               </Typography>
-              <div className="flex flex-row items-center justify-between gap-5 mb-2">
+              <div className="flex flex-row justify-end mb-2">
                 <TextField
                   label="Quantity"
                   type="number"
