@@ -88,7 +88,10 @@ function ProductPage({
               <Typography gutterBottom variant="h6" component="div">
                 {product.description}
               </Typography>
-              <div className="flex flex-row justify-end mb-2">
+              <div className="flex flex-row justify-end items-center mb-2">
+                {inCartItems.has(product.id) && (
+                  <Typography color="red">IN CART</Typography>
+                )}
                 <TextField
                   label="Quantity"
                   type="number"
@@ -99,6 +102,7 @@ function ProductPage({
                   focused
                   inputProps={{ min: 0, max: 15, step: 1 }}
                   onChange={(val) => setQuantity(Number(val.target.value))}
+                  disabled={inCartItems.has(product.id)}
                 />
                 <IconButton
                   onClick={() => addToCart(product)}

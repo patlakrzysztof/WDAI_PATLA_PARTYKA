@@ -174,18 +174,10 @@ function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
                     className="w-80 h-80 object-contain my-5 mb-5"
                   />
                   <Divider />
-                  <div className="flex flex-row items-center justify-between gap-5 mb-2">
+                  <div className="flex items-center justify-start mb-2">
                     <Typography gutterBottom variant="h6" component="div">
                       {product.category}
                     </Typography>
-                    <IconButton
-                      onClick={() => addToCart(product)}
-                      color="primary"
-                      aria-label="add to shopping cart"
-                      disabled={inCartItems.has(product.id)}
-                    >
-                      <AddShoppingCartIcon />
-                    </IconButton>
                   </div>
                 </CardContent>
               </Card>
