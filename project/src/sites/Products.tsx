@@ -15,56 +15,22 @@ import {
   type TooltipProps,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { useState } from "react";
 
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-}
+//types
+import type { Product } from "../types";
+import type { CartItem } from "../types";
 
-interface CartItem extends Product {
-  quantity: number;
-}
-
-interface ShoppingCartItems {
+interface ProductsProps {
   inCartItems: Map<number, CartItem>;
   setInCartItems: React.Dispatch<React.SetStateAction<Map<number, CartItem>>>;
+  products: Product[];
 }
 
-function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
-  const [products, setProducts] = useState<Product[]>([]);
+function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<"default" | "asc" | "desc">("default");
-
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((data) => {
-        const mappedProducts: Product[] = data.map((product: Product) => ({
-          id: product.id,
-          title: product.title,
-          price: product.price,
-          description: product.description,
-          category: product.category,
-          image: product.image,
-          rating: {
-            rate: product.rating.rate,
-            count: product.rating.count,
-          },
-        }));
-        setProducts(mappedProducts);
-      })
-      .catch((err) => console.error(err));
-  }, []);
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
