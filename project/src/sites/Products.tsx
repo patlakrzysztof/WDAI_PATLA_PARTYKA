@@ -15,56 +15,25 @@ import {
   type TooltipProps,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-}
+//types
+import type { Product } from "../types";
+import type { CartItem } from "../types";
 
-interface CartItem extends Product {
-  quantity: number;
-}
-
-interface ShoppingCartItems {
+interface ProductsProps {
   inCartItems: Map<number, CartItem>;
   setInCartItems: React.Dispatch<React.SetStateAction<Map<number, CartItem>>>;
+  products: Product[];
 }
 
-function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
-  const [products, setProducts] = useState<Product[]>([]);
+function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<"default" | "asc" | "desc">("default");
-
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((data) => {
-        const mappedProducts: Product[] = data.map((product: Product) => ({
-          id: product.id,
-          title: product.title,
-          price: product.price,
-          description: product.description,
-          category: product.category,
-          image: product.image,
-          rating: {
-            rate: product.rating.rate,
-            count: product.rating.count,
-          },
-        }));
-        setProducts(mappedProducts);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  const [sort, setSort] = useState<
+    "default" | "asc" | "desc" | "asc-rate" | "desc-rate"
+  >("default");
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -97,8 +66,17 @@ function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
     .sort((a, b) => {
       if (sort === "asc") return a.price - b.price;
       if (sort === "desc") return b.price - a.price;
+      if (sort === "asc-rate") return a.rating.rate - b.rating.rate;
+      if (sort === "desc-rate") return b.rating.rate - a.rating.rate;
       return 0;
     });
+
+  const slugify = (text: string) =>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
 
   return (
     <div>
@@ -159,6 +137,8 @@ function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
             <option value="default">Default</option>
             <option value="asc">Price Ascending</option>
             <option value="desc">Price Descending</option>
+            <option value="asc-rate">Rating Ascending</option>
+            <option value="desc-rate">Rating Descending</option>
           </NativeSelect>
         </FormControl>
       </div>
@@ -173,46 +153,41 @@ function Products({ inCartItems, setInCartItems }: ShoppingCartItems) {
             slotProps={{
               transition: { timeout: 600 },
             }}
+            key={product.id}
           >
-            <Card variant="outlined" sx={{ maxWidth: 360 }}>
-              <CardContent sx={{ p: 2 }}>
-                <div className="flex flex-row items-center justify-between gap-5">
-                  <Typography gutterBottom variant="h5" component="div">
-                    {product.title}
-                  </Typography>
-                  <Typography gutterBottom variant="h6" component="div">
-                    {product.price}$
-                  </Typography>
-                </div>
-                <Rating
-                  name="read-only"
-                  value={product.rating.rate}
-                  readOnly
-                  className="mb-3"
-                />
-                ({product.rating.count})
-                <Divider />
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="w-80 h-80 object-contain my-5 mb-5"
-                />
-                <Divider />
-                <div className="flex flex-row items-center justify-between gap-5 mb-2">
-                  <Typography gutterBottom variant="h6" component="div">
-                    {product.category}
-                  </Typography>
-                  <IconButton
-                    onClick={() => addToCart(product)}
-                    color="primary"
-                    aria-label="add to shopping cart"
-                    disabled={inCartItems.has(product.id)}
-                  >
-                    <AddShoppingCartIcon />
-                  </IconButton>
-                </div>
-              </CardContent>
-            </Card>
+            <Link to={`/products/${slugify(product.title)}`}>
+              <Card variant="outlined" sx={{ maxWidth: 360 }}>
+                <CardContent sx={{ p: 2 }}>
+                  <div className="flex flex-row items-center justify-between gap-5">
+                    <Typography gutterBottom variant="h5" component="div">
+                      {product.title}
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="div">
+                      {product.price}$
+                    </Typography>
+                  </div>
+                  <Rating
+                    name="read-only"
+                    value={product.rating.rate}
+                    readOnly
+                    className="mb-3"
+                  />
+                  ({product.rating.count})
+                  <Divider />
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="w-80 h-80 object-contain my-5 mb-5"
+                  />
+                  <Divider />
+                  <div className="flex items-center justify-start mb-2">
+                    <Typography gutterBottom variant="h6" component="div">
+                      {product.category}
+                    </Typography>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </HtmlTooltip>
         ))}
       </div>

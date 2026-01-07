@@ -8,29 +8,16 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-interface Product {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-}
+//types
+import type { Product } from "../types";
+import type { CartItem } from "../types";
 
-interface CartItem extends Product {
-  quantity: number;
-}
-
-interface ShoppingCartItems {
+interface ShoppingCartProps {
   inCartItems: Map<number, CartItem>;
   setInCartItems: React.Dispatch<React.SetStateAction<Map<number, CartItem>>>;
 }
 
-function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartItems) {
+function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartProps) {
   const handleQuantityChange = (product: CartItem, quantity: number) => {
     setInCartItems((prev) => {
       const copy = new Map(prev);
