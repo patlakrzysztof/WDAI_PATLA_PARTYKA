@@ -22,3 +22,22 @@ export interface Review {
   rating: number;
   avatar: string;
 }
+
+export interface User {
+  id: number;
+  name: string;
+  surname: string;
+  nickname: string;
+  mail: string;
+  phone: string | null;
+  address: Address | null;
+}
+
+export interface Address {
+  country: string;
+  city: string;
+  zipCode: string;
+  street: string;
+  houseNumber: number;
+  flatNumber: number | null;
+}
