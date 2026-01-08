@@ -41,3 +41,18 @@ export interface Address {
   houseNumber: number;
   flatNumber: number | null;
 }
+
+export interface OrderItem {
+  productId: number;
+  quantity: number;
+  priceAtPurchase: number;
+}
+
+export interface Order {
+  orderId: number;
+  userId: number;
+  orderDate: Date;
+  sentDate: Date | null;
+  inDate: Date | null;
+  items: OrderItem[];
+}
