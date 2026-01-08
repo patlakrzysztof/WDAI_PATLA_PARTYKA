@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import HomeIcon from "@mui/icons-material/Home";
-import { Badge } from "@mui/material";
+import { Avatar, Badge } from "@mui/material";
 
 // sites
 import HomePage from "./sites/Home";
@@ -17,6 +17,7 @@ import ProductPage from "./sites/ProductPage";
 //types
 import type { Product } from "./types";
 import type { CartItem } from "./types";
+import ProfilePage from "./sites/Profile";
 
 function App() {
   const [inCartItems, setInCartItems] = useState<Map<number, CartItem>>(
@@ -56,17 +57,26 @@ function App() {
             <StorefrontIcon />
           </Link>
         </div>
-        <div>
+        <div className="flex flex-row gap-5">
           <Link to="/cart">
             <Badge badgeContent={inCartItems.size} color="primary">
               <ShoppingCartIcon />
             </Badge>
+          </Link>
+
+          <Link to="/profile">
+            <Avatar
+              alt="Profile"
+              src="/static/images/avatar/1.jpg"
+              sx={{ width: 25, height: 25 }}
+            />
           </Link>
         </div>
       </nav>
 
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route
           path="/cart"
           element={
