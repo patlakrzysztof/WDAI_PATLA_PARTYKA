@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend for the web-app store project",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "run": ""
+  },
+  "dependencies": {
+    "concurrently": "^9.2.1",
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11",
+    "sequelize": "^6.37.7",
+    "sqlite3": "^5.1.7"
+  }
+}
