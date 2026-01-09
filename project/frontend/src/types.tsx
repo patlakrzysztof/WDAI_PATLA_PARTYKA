@@ -30,7 +30,6 @@ export interface User {
   nickname: string;
   mail: string;
   phone: string | null;
-  address: Address | null;
 }
 
 export interface Address {
@@ -55,4 +54,5 @@ export interface Order {
   sentDate: Date | null;
   inDate: Date | null;
   items: OrderItem[];
+  address: Address;
 }
