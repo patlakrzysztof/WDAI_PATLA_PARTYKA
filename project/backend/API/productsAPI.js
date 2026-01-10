@@ -14,14 +14,75 @@ app.listen(3002, (err) => {
 });
 
 app.get("/api/products", async (req, res) => {
-  const products = await ProductsDB.findAll();
-  if (!products) {
-    return res.status(400).json("Products not found");
+  try {
+    const products = await ProductsDB.findAll();
+    if (!products) {
+      return res.status(404).json("Products not found");
+    }
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-  res.json(products);
 });
 
-app.post("/", async (req, res) => {
-  const product = await ProductsDB.create(req.body);
-  res.status(201).json(product);
+app.get("/api/products/:id", async (req, res) => {
+  try {
+    const product = await ProductsDB.findByPk(req.params.id);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/products", async (req, res) => {
+  try {
+    const {
+      title,
+      price,
+      description,
+      category,
+      image,
+      rating_rate,
+      rating_count,
+    } = req.body;
+    if (
+      !title ||
+      !price ||
+      !description ||
+      !category ||
+      !image ||
+      !rating_rate ||
+      !rating_count
+    ) {
+      return res.status(400).json({ error: "Wrong Data" });
+    }
+    const newBook = await Book.create({
+      title,
+      price,
+      description,
+      category,
+      image,
+      rating_rate,
+      rating_count,
+    });
+    res.status(201).json({ id: newBook.id });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete("/api/products/:id", async (req, res) => {
+  try {
+    const product = await ProductsDB.findByPk(req.params.id);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    await product.destroy();
+    res.json({ message: "Product deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
