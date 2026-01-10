@@ -11,7 +11,6 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 
 //types
-import type { Product } from "../types";
 import type { CartItem } from "../types";
 import { Link } from "react-router-dom";
 

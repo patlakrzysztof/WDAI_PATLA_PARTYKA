@@ -86,16 +86,7 @@ function App() {
             />
           }
         />
-        <Route
-          path="/products"
-          element={
-            <Products
-              inCartItems={inCartItems}
-              setInCartItems={setInCartItems}
-              products={products}
-            />
-          }
-        />
+        <Route path="/products" element={<Products products={products} />} />
         <Route
           path="/products/:productName"
           element={

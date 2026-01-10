@@ -3,7 +3,6 @@ import {
   CardContent,
   Divider,
   FormControl,
-  IconButton,
   InputLabel,
   NativeSelect,
   Rating,
@@ -14,22 +13,18 @@ import {
   Zoom,
   type TooltipProps,
 } from "@mui/material";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 //types
 import type { Product } from "../types";
-import type { CartItem } from "../types";
 
 interface ProductsProps {
-  inCartItems: Map<number, CartItem>;
-  setInCartItems: React.Dispatch<React.SetStateAction<Map<number, CartItem>>>;
   products: Product[];
 }
 
-function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
+function Products({ products }: ProductsProps) {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<
     "default" | "asc" | "desc" | "asc-rate" | "desc-rate"
@@ -46,18 +41,6 @@ function Products({ inCartItems, setInCartItems, products }: ProductsProps) {
       border: "2px solid #dadde9",
     },
   }));
-
-  const addToCart = (product: Product) => {
-    setInCartItems((prev) => {
-      const copy = new Map(prev);
-      if (copy.has(product.id)) {
-        return copy;
-      } else {
-        copy.set(product.id, { ...product, quantity: 1 });
-        return copy;
-      }
-    });
-  };
 
   const filteredProducts = products
     .filter((product) =>
