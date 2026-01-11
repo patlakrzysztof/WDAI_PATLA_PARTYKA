@@ -22,3 +22,38 @@ export interface Review {
   rating: number;
   avatar: string;
 }
+
+export interface User {
+  id: number;
+  name: string;
+  surname: string;
+  nickname: string;
+  mail: string;
+  phone: string | null;
+}
+
+export interface Address {
+  country: string;
+  city: string;
+  zipCode: string;
+  street: string;
+  houseNumber: number;
+  flatNumber: number | null;
+}
+
+export interface OrderItem {
+  productId: number;
+  productName: string;
+  quantity: number;
+  priceAtPurchase: number;
+}
+
+export interface Order {
+  orderId: number;
+  userId: number;
+  orderDate: Date;
+  sentDate: Date | null;
+  inDate: Date | null;
+  items: OrderItem[];
+  address: Address;
+}

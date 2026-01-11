@@ -13,11 +13,12 @@ import HomePage from "./sites/Home";
 import ShoppingCart from "./sites/ShoppingCart";
 import Products from "./sites/Products";
 import ProductPage from "./sites/ProductPage";
+import OrderDetails from "./sites/OrderDetails";
 
 //types
 import type { Product } from "./types";
 import type { CartItem } from "./types";
-import ProfilePage from "./sites/Profile";
+import ProfilePage from "./sites/profile/Profile";
 
 function App() {
   const [inCartItems, setInCartItems] = useState<Map<number, CartItem>>(
@@ -65,11 +66,7 @@ function App() {
           </Link>
 
           <Link to="/profile">
-            <Avatar
-              alt="Profile"
-              src="/static/images/avatar/1.jpg"
-              sx={{ width: 25, height: 25 }}
-            />
+            <Avatar alt="avatar image" sx={{ width: 25, height: 25 }} />
           </Link>
         </div>
       </nav>
@@ -97,6 +94,7 @@ function App() {
             />
           }
         />
+        <Route path="/orders/:orderId" element={<OrderDetails />} />
       </Routes>
     </BrowserRouter>
   );
