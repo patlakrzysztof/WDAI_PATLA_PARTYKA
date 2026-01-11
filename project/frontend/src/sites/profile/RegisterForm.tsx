@@ -1,6 +1,21 @@
 import { Button, TextField, Typography } from "@mui/material";
+import { useState, type FormEvent } from "react";
 
 export default function RegisterForm() {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
+
+  const handleRegister = (e: FormEvent) => {
+    e.preventDefault();
+    //data auth
+    //api register call
+  };
+
   return (
     <div
       className="flex flex-col gap-6 items-center flex-grow
@@ -14,10 +29,11 @@ export default function RegisterForm() {
         Create account
       </Typography>
 
-      <div className="flex flex-col w-full gap-4">
+      <form className="flex flex-col w-full gap-4" onSubmit={handleRegister}>
         <TextField
-          id="mail"
           label="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           variant="outlined"
           fullWidth
           sx={{
@@ -29,8 +45,9 @@ export default function RegisterForm() {
         />
         <div className="flex flex-row gap-2">
           <TextField
-            id="name"
             label="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             variant="outlined"
             fullWidth
             sx={{
@@ -41,8 +58,9 @@ export default function RegisterForm() {
             required
           />
           <TextField
-            id="surname"
             label="Surname"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
             variant="outlined"
             fullWidth
             sx={{
@@ -54,8 +72,9 @@ export default function RegisterForm() {
           />
         </div>
         <TextField
-          id="nickname"
           label="Nickname"
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
           variant="outlined"
           fullWidth
           sx={{
@@ -66,8 +85,9 @@ export default function RegisterForm() {
           required
         />
         <TextField
-          id="phone"
           label="Phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
           variant="outlined"
           fullWidth
           sx={{
@@ -77,8 +97,9 @@ export default function RegisterForm() {
           }}
         />
         <TextField
-          id="password"
           label="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           variant="outlined"
           type="password"
           fullWidth
@@ -90,8 +111,9 @@ export default function RegisterForm() {
           required
         />
         <TextField
-          id="password2"
           label="Repeat password"
+          value={password2}
+          onChange={(e) => setPassword2(e.target.value)}
           variant="outlined"
           type="password"
           fullWidth
@@ -107,10 +129,11 @@ export default function RegisterForm() {
           color="secondary"
           size="large"
           sx={{ color: "white", fontWeight: "bold", mt: 2 }}
+          type="submit"
         >
-          Log In
+          Register
         </Button>
-      </div>
+      </form>
     </div>
   );
 }

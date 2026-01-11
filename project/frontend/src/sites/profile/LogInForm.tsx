@@ -1,6 +1,16 @@
 import { Button, TextField, Typography } from "@mui/material";
+import { useState, type FormEvent } from "react";
 
 export default function LogInForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogIn = (e: FormEvent) => {
+    e.preventDefault();
+    //data auth
+    // log in api call
+  };
+
   return (
     <div
       className="flex flex-col gap-6 items-center 
@@ -14,10 +24,11 @@ export default function LogInForm() {
         I've got an account
       </Typography>
 
-      <div className="flex flex-col w-full gap-4">
+      <form className="flex flex-col w-full gap-4" onSubmit={handleLogIn}>
         <TextField
-          id="mail"
           label="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           variant="outlined"
           fullWidth
           sx={{
@@ -28,8 +39,9 @@ export default function LogInForm() {
           required
         />
         <TextField
-          id="password"
           label="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           variant="outlined"
           type="password"
           fullWidth
@@ -45,10 +57,11 @@ export default function LogInForm() {
           color="secondary"
           size="large"
           sx={{ color: "white", fontWeight: "bold", mt: 2 }}
+          type="submit"
         >
           Log In
         </Button>
-      </div>
+      </form>
     </div>
   );
 }
