@@ -11,6 +11,7 @@ import {
   Box,
 } from "@mui/material";
 import type { Order } from "../../types";
+import { Link } from "react-router-dom";
 
 const mockOrders: Order[] = Array.from({ length: 10 }, (_, index) => ({
   orderId: index + 1,
@@ -99,7 +100,7 @@ export default function UserOrders() {
                   <TableCell>${total.toFixed(2)}</TableCell>
                   <TableCell align="right">
                     <Button size="small" variant="outlined" color="primary">
-                      Details
+                      <Link to={`/orders/${order.orderId}`}>Details</Link>
                     </Button>
                   </TableCell>
                 </TableRow>

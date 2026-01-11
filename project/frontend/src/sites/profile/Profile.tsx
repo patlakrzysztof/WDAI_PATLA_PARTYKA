@@ -2,7 +2,7 @@ import UserPage from "./UserPage";
 import NotLoggedInPage from "./NotLoggedInPage";
 
 function ProfilePage() {
-  const isLoggedIn = false;
+  const isLoggedIn = true;
 
   return <>{isLoggedIn ? <UserPage /> : <NotLoggedInPage />}</>;
 }

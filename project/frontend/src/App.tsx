@@ -13,6 +13,7 @@ import HomePage from "./sites/Home";
 import ShoppingCart from "./sites/ShoppingCart";
 import Products from "./sites/Products";
 import ProductPage from "./sites/ProductPage";
+import OrderDetails from "./sites/OrderDetails";
 
 //types
 import type { Product } from "./types";
@@ -102,6 +103,7 @@ function App() {
             />
           }
         />
+        <Route path="/orders/:orderId" element={<OrderDetails />} />
       </Routes>
     </BrowserRouter>
   );
