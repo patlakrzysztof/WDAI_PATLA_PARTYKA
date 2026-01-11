@@ -22,11 +22,13 @@ const mockOrders: Order[] = Array.from({ length: 10 }, (_, index) => ({
   items: [
     {
       productId: (index % 5) + 1,
+      productName: "someName",
       quantity: (index % 3) + 1,
       priceAtPurchase: 19.99 + index * 5,
     },
     {
       productId: (index % 5) + 2,
+      productName: "someName",
       quantity: 1,
       priceAtPurchase: 9.99,
     },
