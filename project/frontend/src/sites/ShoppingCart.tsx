@@ -15,28 +15,42 @@ import type { CartItem } from "../types";
 import { Link } from "react-router-dom";
 
 interface ShoppingCartProps {
-  inCartItems: Map<number, CartItem>;
-  setInCartItems: React.Dispatch<React.SetStateAction<Map<number, CartItem>>>;
+  userId: number;
+  inCartItems: CartItem[];
+  setInCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
-function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartProps) {
-  const handleQuantityChange = (product: CartItem, quantity: number) => {
-    setInCartItems((prev) => {
-      const copy = new Map(prev);
-      const item = copy.get(product.id);
-      if (item) {
-        copy.set(product.id, { ...item, quantity });
-      }
-      return copy;
-    });
+function ShoppingCart({
+  userId,
+  inCartItems,
+  setInCartItems,
+}: ShoppingCartProps) {
+  const handleQuantityChange = async (product: CartItem, quantity: number) => {
+    try {
+      await fetch(`http://localhost:3004/api/cart/${userId}/${product.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity }),
+      });
+
+      setInCartItems((prev) => {
+        return prev.map((i) => (i.id === product.id ? { ...i, quantity } : i));
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleDelete = (productId: number) => {
-    setInCartItems((prev) => {
-      const copy = new Map(prev);
-      copy.delete(productId);
-      return copy;
-    });
+  const handleDelete = async (productId: number) => {
+    try {
+      await fetch(`http://localhost:3004/api/cart/${userId}/${productId}`, {
+        method: "DELETE",
+      });
+
+      setInCartItems((prev) => prev.filter((item) => item.id !== productId));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const cartSummary = Array.from(inCartItems.values()).reduce(
@@ -61,7 +75,7 @@ function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartProps) {
             </Typography>
           </CardContent>
         </Card>
-        {inCartItems.size > 0 ? (
+        {inCartItems.length > 0 ? (
           Array.from(inCartItems.values()).map((product) => (
             <Card variant="outlined" sx={{ maxWidth: 360 }}>
               <CardContent sx={{ p: 2 }}>

@@ -7,9 +7,10 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"npm run users\" \"npm run products\"",
+    "start": "concurrently \"npm run users\" \"npm run products\" \"npm run cart\"",
     "users": "nodemon ./API/usersAPI.js",
-    "products": "nodemon ./API/productsAPI.js"
+    "products": "nodemon ./API/productsAPI.js",
+    "cart": "nodemon ./API/cartAPI.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
