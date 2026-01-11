@@ -64,7 +64,7 @@ export default function UserOrders() {
           Recent Orders
         </Typography>
       </Box>
-      <TableContainer className="max-h-[600px]">
+      <TableContainer className="max-h-[700px]">
         <Table>
           <TableHead>
             <TableRow>
