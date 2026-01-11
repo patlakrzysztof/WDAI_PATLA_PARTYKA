@@ -7,6 +7,9 @@ sequelize.sync();
 const app = express();
 app.use(express.json());
 
+const cors = require("cors");
+app.use(cors());
+
 app.listen(3003, (err) => {
   if (err) process.exit(1);
   console.log("Server running");

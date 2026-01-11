@@ -49,8 +49,8 @@ function Products({ products }: ProductsProps) {
     .sort((a, b) => {
       if (sort === "asc") return a.price - b.price;
       if (sort === "desc") return b.price - a.price;
-      if (sort === "asc-rate") return a.rating.rate - b.rating.rate;
-      if (sort === "desc-rate") return b.rating.rate - a.rating.rate;
+      if (sort === "asc-rate") return a.rating_rate - b.rating_rate;
+      if (sort === "desc-rate") return b.rating_rate - a.rating_rate;
       return 0;
     });
 
@@ -151,11 +151,11 @@ function Products({ products }: ProductsProps) {
                   </div>
                   <Rating
                     name="read-only"
-                    value={product.rating.rate}
+                    value={product.rating_rate}
                     readOnly
                     className="mb-3"
                   />
-                  ({product.rating.count})
+                  ({product.rating_count})
                   <Divider />
                   <img
                     src={product.image}
