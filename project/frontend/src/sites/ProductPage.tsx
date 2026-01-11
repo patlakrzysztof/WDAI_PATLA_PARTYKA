@@ -153,11 +153,11 @@ function ProductPage({
               <div>
                 <Rating
                   name="read-only"
-                  value={product.rating.rate}
+                  value={product.rating_rate}
                   readOnly
                   className="mb-3"
                 />
-                ({product.rating.count})
+                ({product.rating_count})
               </div>
               <Typography gutterBottom variant="h4" component="div">
                 {product.price}$

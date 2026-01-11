@@ -27,9 +27,10 @@ function App() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
+    fetch("http://localhost:3003/api/products")
       .then((res) => res.json())
       .then((data) => {
+        console.log("Fetched products:", data);
         const mappedProducts: Product[] = data.map((product: Product) => ({
           id: product.id,
           title: product.title,
@@ -37,10 +38,8 @@ function App() {
           description: product.description,
           category: product.category,
           image: product.image,
-          rating: {
-            rate: product.rating.rate,
-            count: product.rating.count,
-          },
+          rating_rate: product.rating_rate,
+          rating_count: product.rating_count,
         }));
         setProducts(mappedProducts);
       })
