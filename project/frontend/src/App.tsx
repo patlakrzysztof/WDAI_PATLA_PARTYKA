@@ -21,10 +21,9 @@ import type { CartItem } from "./types";
 import ProfilePage from "./sites/profile/Profile";
 
 function App() {
-  const [inCartItems, setInCartItems] = useState<Map<number, CartItem>>(
-    new Map()
-  );
+  const [inCartItems, setInCartItems] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const userId = 1;
 
   useEffect(() => {
     fetch("http://localhost:3003/api/products")
@@ -46,6 +45,26 @@ function App() {
       .catch((err) => console.error(err));
   }, []);
 
+  useEffect(() => {
+    fetch(`http://localhost:3004/api/cart/${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const mapped: CartItem[] = data.map((item: any) => ({
+          id: item.productId,
+          title: item.product.title,
+          price: item.product.price,
+          description: item.product.description,
+          category: item.product.category,
+          image: item.product.image,
+          quantity: item.quantity,
+          rating_rate: item.product.rating_rate,
+          rating_count: item.product.rating_count,
+        }));
+        setInCartItems(mapped);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <BrowserRouter>
       <nav className="px-5 py-5 flex justify-between">
@@ -59,7 +78,7 @@ function App() {
         </div>
         <div className="flex flex-row gap-5">
           <Link to="/cart">
-            <Badge badgeContent={inCartItems.size} color="primary">
+            <Badge badgeContent={inCartItems.length} color="primary">
               <ShoppingCartIcon />
             </Badge>
           </Link>
@@ -77,6 +96,7 @@ function App() {
           path="/cart"
           element={
             <ShoppingCart
+              userId={userId}
               inCartItems={inCartItems}
               setInCartItems={setInCartItems}
             />
@@ -87,6 +107,7 @@ function App() {
           path="/products/:productName"
           element={
             <ProductPage
+              userId={userId}
               inCartItems={inCartItems}
               setInCartItems={setInCartItems}
               products={products}

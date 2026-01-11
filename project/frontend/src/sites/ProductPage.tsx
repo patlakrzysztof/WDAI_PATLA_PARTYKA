@@ -21,12 +21,14 @@ import React, { useState } from "react";
 import type { CartItem, Product, Review } from "../types";
 
 interface ProductPageProps {
-  inCartItems: Map<number, CartItem>;
-  setInCartItems: React.Dispatch<React.SetStateAction<Map<number, CartItem>>>;
+  userId: number;
+  inCartItems: CartItem[];
+  setInCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
   products: Product[];
 }
 
 function ProductPage({
+  userId,
   inCartItems,
   setInCartItems,
   products,
@@ -45,16 +47,40 @@ function ProductPage({
   );
   const [quantity, setQuantity] = useState<number>(0);
 
-  const addToCart = (product: Product) => {
-    setInCartItems((prev) => {
-      const copy = new Map(prev);
-      if (copy.has(product.id)) {
-        return copy;
-      } else {
-        copy.set(product.id, { ...product, quantity: quantity });
-        return copy;
-      }
-    });
+  const addToCart = async (product: Product) => {
+    if (!product) return;
+    try {
+      const response = await fetch("http://localhost:3004/api/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+          productId: product.id,
+          quantity: quantity,
+        }),
+      });
+
+      const newItem = await response.json();
+
+      setInCartItems((prev) => {
+        return [
+          ...prev,
+          {
+            id: newItem.productId,
+            title: product.title,
+            price: product.price,
+            description: product.description,
+            category: product.category,
+            image: product.image,
+            quantity: newItem.quantity,
+            rating_rate: product.rating_rate,
+            rating_count: product.rating_count,
+          },
+        ];
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (!product) {
@@ -122,7 +148,7 @@ function ProductPage({
                   {product.description}
                 </Typography>
                 <div className="flex flex-row justify-end items-center mb-2">
-                  {inCartItems.has(product.id) && (
+                  {inCartItems.some((item) => item.id === product.id) && (
                     <Typography color="red">IN CART</Typography>
                   )}
                   <TextField
@@ -135,13 +161,17 @@ function ProductPage({
                     focused
                     inputProps={{ min: 0, max: 15, step: 1 }}
                     onChange={(val) => setQuantity(Number(val.target.value))}
-                    disabled={inCartItems.has(product.id)}
+                    disabled={inCartItems.some(
+                      (item) => item.id === product.id
+                    )}
                   />
                   <IconButton
                     onClick={() => addToCart(product)}
                     color="primary"
                     aria-label="add to shopping cart"
-                    disabled={inCartItems.has(product.id)}
+                    disabled={inCartItems.some(
+                      (item) => item.id === product.id
+                    )}
                   >
                     <AddShoppingCartIcon />
                   </IconButton>
