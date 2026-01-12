@@ -76,10 +76,9 @@ app.post("/users/register", async (req, res) => {
       if (v === undefined || v === null || String(v).trim() === "")
         return { value: null };
       const raw = String(v).trim();
-      const phoneReg =
-        /^[\+]?[0-9]{0,3}\W?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+      const phoneReg = /^\+?(?:\d\s*){6,15}$/;
 
-      if (!phoneReg.test(raw)) return { error: "invalid format" };
+      if (!phoneReg.test(raw)) return { error: "invalid phone format" };
       return { value: raw };
     },
     password: (v) => {
@@ -88,6 +87,9 @@ app.post("/users/register", async (req, res) => {
       const raw = String(v).trim();
       if (hasWhiteSpace(raw))
         return { error: "cannot have spaces in password" };
+
+      if (raw.length < 8)
+        return { error: "password has to be at least 8 characters" };
 
       return { value: raw };
     },
@@ -183,7 +185,7 @@ app.post("/users/login", async (req, res) => {
   }
 });
 
-app.post("/users/logout", (req, res) => {
+app.post("/users/logout", authenticateToken, (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully" });
 });

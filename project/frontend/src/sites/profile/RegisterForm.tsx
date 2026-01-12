@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Alert, Button, TextField, Typography } from "@mui/material";
 import { useState, type FormEvent } from "react";
 
 export default function RegisterForm() {
@@ -9,11 +9,15 @@ export default function RegisterForm() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
+    setError("");
+    setSuccess("");
     if (password != password2) {
-      alert("passwords aren't the same");
+      setError("passwords aren't the same");
       return;
     }
 
@@ -35,13 +39,26 @@ export default function RegisterForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        alert("error" + data?.error);
+        setError(data?.error || "Register failed");
         return;
       }
-    } catch (err) {
-      console.error(err);
-      alert("Unknown error has occured");
+      clearForm();
+      setSuccess("Registered succesfully");
+    } catch {
+      setError("Failed to register");
     }
+  };
+
+  const clearForm = () => {
+    setMail("");
+    setName("");
+    setSurname("");
+    setNickname("");
+    setPhone("");
+    setPassword("");
+    setPassword2("");
+    setError("");
+    setSuccess("");
   };
 
   return (
@@ -152,6 +169,8 @@ export default function RegisterForm() {
           }}
           required
         />
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && <Alert severity="success">{success}</Alert>}
         <Button
           variant="contained"
           color="secondary"

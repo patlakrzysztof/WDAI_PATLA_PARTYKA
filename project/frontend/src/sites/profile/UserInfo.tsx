@@ -25,6 +25,23 @@ export default function UserInfo() {
     setIsShown((before) => !before);
   };
 
+  const logOut = async () => {
+    try {
+      const res = await fetch("http://localhost:3002/users/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      if (!res.ok) alert("cannot log out");
+    } catch {
+      alert("cannot log out");
+    } finally {
+      window.location.reload();
+    }
+  };
+
   return (
     <Card
       elevation={5}
@@ -74,6 +91,9 @@ export default function UserInfo() {
           className="bg-primary hover:bg-[#1A2D27] normal-case px-8"
         >
           {isShown ? "Hide Details" : "Show Details"}
+        </Button>
+        <Button variant="contained" color="error" onClick={logOut}>
+          Log out
         </Button>
       </CardActions>
     </Card>

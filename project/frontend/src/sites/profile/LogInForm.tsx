@@ -1,12 +1,14 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Alert, Button, TextField, Typography } from "@mui/material";
 import { useState, type FormEvent } from "react";
 
 export default function LogInForm() {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleLogIn = async (e: FormEvent) => {
     e.preventDefault();
+    setError("");
 
     try {
       const res = await fetch("http://localhost:3002/users/login", {
@@ -22,13 +24,12 @@ export default function LogInForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        alert("login failed: " + data?.error);
+        setError(data?.error || "Login failed");
         return;
       }
       window.location.reload();
-    } catch (e) {
-      console.error("error: " + e);
-      alert("login failed");
+    } catch {
+      setError("Login failed");
     }
   };
 
@@ -73,6 +74,7 @@ export default function LogInForm() {
           }}
           required
         />
+        {error && <Alert severity="error">{error}</Alert>}
         <Button
           variant="contained"
           color="secondary"
