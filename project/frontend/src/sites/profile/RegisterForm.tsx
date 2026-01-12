@@ -37,8 +37,6 @@ export default function RegisterForm() {
       if (!res.ok) {
         alert("error" + data?.error);
         return;
-      } else {
-        alert("registration successfull, you can now log in");
       }
     } catch (err) {
       console.error(err);

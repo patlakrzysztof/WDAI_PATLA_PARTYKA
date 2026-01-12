@@ -8,7 +8,9 @@ function ProfilePage() {
   useEffect(() => {
     const checkUserStatus = async () => {
       try {
-        const res = await fetch("http://localhost:3002/users/me");
+        const res = await fetch("http://localhost:3002/users/me", {
+          credentials: "include",
+        });
         if (res.ok) {
           setIsLoggedIn(true);
         } else {

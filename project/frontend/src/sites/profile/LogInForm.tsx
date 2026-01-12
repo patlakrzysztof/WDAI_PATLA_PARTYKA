@@ -2,13 +2,34 @@ import { Button, TextField, Typography } from "@mui/material";
 import { useState, type FormEvent } from "react";
 
 export default function LogInForm() {
-  const [email, setEmail] = useState("");
+  const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogIn = (e: FormEvent) => {
+  const handleLogIn = async (e: FormEvent) => {
     e.preventDefault();
-    //data auth
-    // log in api call
+
+    try {
+      const res = await fetch("http://localhost:3002/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          mail: mail,
+          password: password,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert("login failed: " + data?.error);
+        return;
+      }
+      window.location.reload();
+    } catch (e) {
+      console.error("error: " + e);
+      alert("login failed");
+    }
   };
 
   return (
@@ -27,8 +48,8 @@ export default function LogInForm() {
       <form className="flex flex-col w-full gap-4" onSubmit={handleLogIn}>
         <TextField
           label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={mail}
+          onChange={(e) => setMail(e.target.value)}
           variant="outlined"
           fullWidth
           sx={{
