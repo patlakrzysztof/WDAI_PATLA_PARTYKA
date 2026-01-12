@@ -1,14 +1,36 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Alert, Button, TextField, Typography } from "@mui/material";
 import { useState, type FormEvent } from "react";
 
 export default function LogInForm() {
-  const [email, setEmail] = useState("");
+  const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogIn = (e: FormEvent) => {
+  const handleLogIn = async (e: FormEvent) => {
     e.preventDefault();
-    //data auth
-    // log in api call
+    setError("");
+
+    try {
+      const res = await fetch("http://localhost:3002/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          mail: mail,
+          password: password,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data?.error || "Login failed");
+        return;
+      }
+      window.location.reload();
+    } catch {
+      setError("Login failed");
+    }
   };
 
   return (
@@ -27,8 +49,8 @@ export default function LogInForm() {
       <form className="flex flex-col w-full gap-4" onSubmit={handleLogIn}>
         <TextField
           label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={mail}
+          onChange={(e) => setMail(e.target.value)}
           variant="outlined"
           fullWidth
           sx={{
@@ -52,6 +74,7 @@ export default function LogInForm() {
           }}
           required
         />
+        {error && <Alert severity="error">{error}</Alert>}
         <Button
           variant="contained"
           color="secondary"

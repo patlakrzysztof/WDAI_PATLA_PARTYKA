@@ -1,19 +1,64 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Alert, Button, TextField, Typography } from "@mui/material";
 import { useState, type FormEvent } from "react";
 
 export default function RegisterForm() {
-  const [email, setEmail] = useState("");
+  const [mail, setMail] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [nickname, setNickname] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleRegister = (e: FormEvent) => {
+  const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
-    //data auth
-    //api register call
+    setError("");
+    setSuccess("");
+    if (password != password2) {
+      setError("passwords aren't the same");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3002/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          name: name,
+          surname: surname,
+          nickname: nickname,
+          mail: mail,
+          phone: phone,
+          password: password,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data?.error || "Register failed");
+        return;
+      }
+      clearForm();
+      setSuccess("Registered succesfully");
+    } catch {
+      setError("Failed to register");
+    }
+  };
+
+  const clearForm = () => {
+    setMail("");
+    setName("");
+    setSurname("");
+    setNickname("");
+    setPhone("");
+    setPassword("");
+    setPassword2("");
+    setError("");
+    setSuccess("");
   };
 
   return (
@@ -32,8 +77,8 @@ export default function RegisterForm() {
       <form className="flex flex-col w-full gap-4" onSubmit={handleRegister}>
         <TextField
           label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={mail}
+          onChange={(e) => setMail(e.target.value)}
           variant="outlined"
           fullWidth
           sx={{
@@ -124,6 +169,8 @@ export default function RegisterForm() {
           }}
           required
         />
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && <Alert severity="success">{success}</Alert>}
         <Button
           variant="contained"
           color="secondary"

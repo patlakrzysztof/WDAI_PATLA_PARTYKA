@@ -18,7 +18,7 @@ import OrderDetails from "./sites/OrderDetails";
 //types
 import type { Product } from "./types";
 import type { CartItem } from "./types";
-import ProfilePage from "./sites/profile/Profile";
+import ProfilePage from "./sites/profile/ProfilePage";
 
 function App() {
   const [inCartItems, setInCartItems] = useState<CartItem[]>([]);
