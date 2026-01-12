@@ -2,7 +2,7 @@ import { Button, TextField, Typography } from "@mui/material";
 import { useState, type FormEvent } from "react";
 
 export default function RegisterForm() {
-  const [email, setEmail] = useState("");
+  const [mail, setMail] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [nickname, setNickname] = useState("");
@@ -10,10 +10,40 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
-  const handleRegister = (e: FormEvent) => {
+  const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
-    //data auth
-    //api register call
+    if (password != password2) {
+      alert("passwords aren't the same");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3002/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          name: name,
+          surname: surname,
+          nickname: nickname,
+          mail: mail,
+          phone: phone,
+          password: password,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert("error" + data?.error);
+        return;
+      } else {
+        alert("registration successfull, you can now log in");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Unknown error has occured");
+    }
   };
 
   return (
@@ -32,8 +62,8 @@ export default function RegisterForm() {
       <form className="flex flex-col w-full gap-4" onSubmit={handleRegister}>
         <TextField
           label="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={mail}
+          onChange={(e) => setMail(e.target.value)}
           variant="outlined"
           fullWidth
           sx={{
