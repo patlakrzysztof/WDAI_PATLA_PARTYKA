@@ -1,3 +1,5 @@
+require("dotenv").config();
+const jwtKey = process.env.JWT_SECRET;
 const express = require("express");
 const sequelize = require("../database");
 const CartDB = require("../models/cart");
@@ -9,6 +11,7 @@ const app = express();
 app.use(express.json());
 
 const cors = require("cors");
+const authenticateToken = require("../util/tokenAuth");
 app.use(cors());
 
 app.listen(3004, (err) => {
@@ -34,9 +37,10 @@ app.get("/api/cart/:userId", async (req, res) => {
   }
 });
 
-app.post("/api/cart", async (req, res) => {
+app.post("/api/cart", authenticateToken, async (req, res) => {
   try {
-    const { userId, productId, quantity } = req.body;
+    const userId = req.user.id;
+    const { productId, quantity } = req.body;
     console.log("BODY:", req.body);
 
     const existing = await CartDB.findOne({ where: { userId, productId } });

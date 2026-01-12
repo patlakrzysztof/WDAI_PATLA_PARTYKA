@@ -16,24 +16,26 @@ import {
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //types
-import type { CartItem, Product, Review } from "../types";
+import type { CartItem, Product, Review, User } from "../types";
 
 interface ProductPageProps {
-  userId: number;
+  user: User | null;
   inCartItems: CartItem[];
   setInCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
   products: Product[];
 }
 
 function ProductPage({
-  userId,
+  user,
   inCartItems,
   setInCartItems,
   products,
 }: ProductPageProps) {
   const { productName } = useParams();
+  const navigate = useNavigate();
 
   const slugify = (text: string) =>
     text
@@ -49,14 +51,18 @@ function ProductPage({
 
   const addToCart = async (product: Product) => {
     if (!product) return;
+    if (!user) {
+      navigate("/profile");
+      return;
+    }
     try {
       const response = await fetch("http://localhost:3004/api/cart", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId,
           productId: product.id,
-          quantity: quantity,
+          quantity,
         }),
       });
 
@@ -64,10 +70,10 @@ function ProductPage({
 
       setInCartItems((prev) => {
         if (prev.some((i) => i.id === product.id)) {
-          return prev; // NIC nie dodawaj
+          return prev;
         }
 
-        return [...prev, { ...product, quantity }];
+        return [...prev, { ...newItem }];
       });
     } catch (err) {
       console.error(err);
