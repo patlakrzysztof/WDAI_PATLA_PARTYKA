@@ -63,20 +63,11 @@ function ProductPage({
       const newItem = await response.json();
 
       setInCartItems((prev) => {
-        return [
-          ...prev,
-          {
-            id: newItem.productId,
-            title: product.title,
-            price: product.price,
-            description: product.description,
-            category: product.category,
-            image: product.image,
-            quantity: newItem.quantity,
-            rating_rate: product.rating_rate,
-            rating_count: product.rating_count,
-          },
-        ];
+        if (prev.some((i) => i.id === product.id)) {
+          return prev; // NIC nie dodawaj
+        }
+
+        return [...prev, { ...product, quantity }];
       });
     } catch (err) {
       console.error(err);

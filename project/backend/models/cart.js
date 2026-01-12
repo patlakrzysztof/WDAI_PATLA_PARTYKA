@@ -4,10 +4,14 @@ const sequelize = require("../database");
 const CartDB = sequelize.define(
   "CartDB",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
     },
     productId: {
       type: DataTypes.INTEGER,

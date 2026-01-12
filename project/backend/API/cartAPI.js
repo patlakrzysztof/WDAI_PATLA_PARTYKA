@@ -37,6 +37,7 @@ app.get("/api/cart/:userId", async (req, res) => {
 app.post("/api/cart", async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
+    console.log("BODY:", req.body);
 
     const existing = await CartDB.findOne({ where: { userId, productId } });
     if (existing) {
