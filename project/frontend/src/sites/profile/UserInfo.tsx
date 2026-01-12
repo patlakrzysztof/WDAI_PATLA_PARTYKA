@@ -7,19 +7,34 @@ import {
   Button,
 } from "@mui/material";
 import type { User } from "../../types";
-import { useState } from "react";
-
-const user: User = {
-  name: "Jan",
-  surname: "Kochanowski",
-  nickname: "Smoothie",
-  id: 124444,
-  mail: "someMail@gmail.com",
-  phone: "48 695 209 243",
-};
+import { useEffect, useState } from "react";
 
 export default function UserInfo() {
   const [isShown, setIsShown] = useState(false);
+  const [user, setUser] = useState<User>({
+    name: "---",
+    surname: "-------",
+    nickname: "----",
+    id: 0,
+    mail: "------------",
+    phone: null,
+  });
+
+  useEffect(() => {
+    const fetchMe = async () => {
+      const res = await fetch("http://localhost:3002/users/me", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      if (!res.ok) window.location.reload();
+      const me = await res.json();
+      setUser(me);
+    };
+    fetchMe();
+  }, []);
 
   const showHideData = () => {
     setIsShown((before) => !before);
@@ -76,10 +91,10 @@ export default function UserInfo() {
             <Typography color="secondary">Phone:</Typography>
             {isShown ? (
               <Typography fontWeight="medium">
-                +{user.phone ? user.phone : "-- --- ---"}
+                {user.phone ? user.phone : "-- --- ---"}
               </Typography>
             ) : (
-              <Typography fontWeight="medium">+●● ●●● ●●● ●●●</Typography>
+              <Typography fontWeight="medium">●● ●●● ●●● ●●●</Typography>
             )}
           </div>
         </div>
