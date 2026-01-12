@@ -1,10 +1,13 @@
-const jwtKey = "fasfasfajs";
+require("dotenv").config();
+const jwtKey = process.env.JWT_SECRET;
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const sequelize = require("../database");
 const Users = require("../models/users");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+const authenticateToken = require("../util/tokenAuth");
 
 sequelize.sync();
 
@@ -16,13 +19,14 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 
 app.listen(3002, (err) => {
   if (err) process.exit(1);
   console.log("Server running");
 });
 
-app.post("/api/register", async (req, res) => {
+app.post("/users/register", async (req, res) => {
   const { name, surname, nickname, mail, phone = null, password } = req.body;
   const validators = {
     name: (v) => {
@@ -122,7 +126,7 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-app.post("/api/login", async (req, res) => {
+app.post("/users/login", async (req, res) => {
   const validators = {
     mail: (v) => {
       if (v === undefined || v === null || String(v).trim() === "")
@@ -176,6 +180,23 @@ app.post("/api/login", async (req, res) => {
     }
   } catch (e) {
     return res.status(500).json({ error: e.message });
+  }
+});
+
+app.post("/users/logout", (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully" });
+});
+
+app.get("/users/me", authenticateToken, async (req, res) => {
+  try {
+    const user = await Users.findOne({ where: { id: req.user.id } });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(user);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
 });
 
