@@ -27,7 +27,6 @@ app.listen(3002, (err) => {
 });
 
 app.post("/users/register", async (req, res) => {
-  const { name, surname, nickname, mail, phone = null, password } = req.body;
   const validators = {
     name: (v) => {
       if (v === undefined || v === null || String(v).trim() === "")
@@ -58,12 +57,11 @@ app.post("/users/register", async (req, res) => {
         return { error: "nickname is missing" };
 
       const raw = String(v).trim();
-      const normalized = raw[0].toUpperCase() + raw.slice(1).toLowerCase();
 
-      if (hasWhiteSpace(normalized))
+      if (hasWhiteSpace(raw))
         return { error: "cannot have spaces in nickname" };
 
-      return { value: normalized };
+      return { value: raw };
     },
     mail: (v) => {
       if (v === undefined || v === null || String(v).trim() === "")
@@ -106,6 +104,8 @@ app.post("/users/register", async (req, res) => {
 
   if (await Users.findOne({ where: { mail: sanitized.mail } }))
     return res.status(400).json({ error: "mail already in use" });
+  if (await Users.findOne({ where: { nickname: sanitized.nickname } }))
+    return res.status(400).json({ error: "nickname already in use" });
 
   try {
     const salt = await bcrypt.genSalt(10);
