@@ -19,6 +19,7 @@ import ProfilePage from "./sites/profile/ProfilePage";
 //types
 import type { Product, User } from "./types";
 import type { CartItem } from "./types";
+import OrderSite from "./sites/OrderSite";
 
 function App() {
   const [inCartItems, setInCartItems] = useState<CartItem[]>([]);
@@ -111,6 +112,16 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route
+          path="/your-order"
+          element={
+            <OrderSite
+              user={user}
+              inCartItems={inCartItems}
+              setInCartItems={setInCartItems}
+            />
+          }
+        />
         <Route
           path="/cart"
           element={
