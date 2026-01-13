@@ -2,20 +2,13 @@ const express = require("express");
 const sequelize = require("../database");
 const ProductsDB = require("../models/products");
 
-sequelize.sync();
-
-const app = express();
-app.use(express.json());
+const router = express.Router();
+router.use(express.json());
 
 const cors = require("cors");
-app.use(cors());
+router.use(cors());
 
-app.listen(3003, (err) => {
-  if (err) process.exit(1);
-  console.log("Server running");
-});
-
-app.get("/api/products", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const products = await ProductsDB.findAll();
     if (!products) {
@@ -27,7 +20,7 @@ app.get("/api/products", async (req, res) => {
   }
 });
 
-app.get("/api/products/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const product = await ProductsDB.findByPk(req.params.id);
     if (!product) {
@@ -39,7 +32,7 @@ app.get("/api/products/:id", async (req, res) => {
   }
 });
 
-app.post("/api/products", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const {
       title,
@@ -61,7 +54,7 @@ app.post("/api/products", async (req, res) => {
     ) {
       return res.status(400).json({ error: "Wrong Data" });
     }
-    const newProduct = await Product.create({
+    const newProduct = await ProductsDB.create({
       title,
       price,
       description,
@@ -76,7 +69,7 @@ app.post("/api/products", async (req, res) => {
   }
 });
 
-app.patch("/api/products/:id", async (req, res) => {
+router.patch("/:id", async (req, res) => {
   try {
     const product = await ProductsDB.findByPk(req.params.id);
     if (!product) {
@@ -90,7 +83,7 @@ app.patch("/api/products/:id", async (req, res) => {
   }
 });
 
-app.delete("/api/products/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const product = await ProductsDB.findByPk(req.params.id);
     if (!product) {
@@ -103,7 +96,7 @@ app.delete("/api/products/:id", async (req, res) => {
   }
 });
 
-app.post("/api/fetch-products", async (req, res) => {
+router.post("/fetch-products", async (req, res) => {
   try {
     const response = await fetch("https://fakestoreapi.com/products");
     const products = await response.json();
@@ -125,3 +118,5 @@ app.post("/api/fetch-products", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+module.exports = router;

@@ -11,23 +11,23 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 
 //types
-import type { CartItem } from "../types";
+import type { CartItem, User } from "../types";
 import { Link } from "react-router-dom";
 
 interface ShoppingCartProps {
-  userId: number;
+  user: User | null;
   inCartItems: CartItem[];
   setInCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
 function ShoppingCart({
-  userId,
+  user,
   inCartItems,
   setInCartItems,
 }: ShoppingCartProps) {
   const handleQuantityChange = async (product: CartItem, quantity: number) => {
     try {
-      await fetch(`http://localhost:3004/api/cart/${userId}/${product.id}`, {
+      await fetch(`http://localhost:3002/api/cart/${user?.id}/${product.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ quantity }),
@@ -43,7 +43,7 @@ function ShoppingCart({
 
   const handleDelete = async (productId: number) => {
     try {
-      await fetch(`http://localhost:3004/api/cart/${userId}/${productId}`, {
+      await fetch(`http://localhost:3002/api/cart/${user?.id}/${productId}`, {
         method: "DELETE",
       });
 

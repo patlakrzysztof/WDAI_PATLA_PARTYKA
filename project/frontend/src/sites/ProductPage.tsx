@@ -16,24 +16,26 @@ import {
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //types
-import type { CartItem, Product, Review } from "../types";
+import type { CartItem, Product, Review, User } from "../types";
 
 interface ProductPageProps {
-  userId: number;
+  user: User | null;
   inCartItems: CartItem[];
   setInCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
   products: Product[];
 }
 
 function ProductPage({
-  userId,
+  user,
   inCartItems,
   setInCartItems,
   products,
 }: ProductPageProps) {
   const { productName } = useParams();
+  const navigate = useNavigate();
 
   const slugify = (text: string) =>
     text
@@ -49,34 +51,35 @@ function ProductPage({
 
   const addToCart = async (product: Product) => {
     if (!product) return;
+    if (!user) {
+      navigate("/profile");
+      return;
+    }
     try {
-      const response = await fetch("http://localhost:3004/api/cart", {
+      const response = await fetch("http://localhost:3002/api/cart", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId,
           productId: product.id,
-          quantity: quantity,
+          quantity,
         }),
       });
 
-      const newItem = await response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Add to cart failed:", response.status, errorData);
+        return;
+      }
+
+      console.log("Add to cart response:");
 
       setInCartItems((prev) => {
-        return [
-          ...prev,
-          {
-            id: newItem.productId,
-            title: product.title,
-            price: product.price,
-            description: product.description,
-            category: product.category,
-            image: product.image,
-            quantity: newItem.quantity,
-            rating_rate: product.rating_rate,
-            rating_count: product.rating_count,
-          },
-        ];
+        if (prev.some((i) => i.id === product.id)) {
+          return prev;
+        }
+
+        return [...prev, { ...product, quantity }];
       });
     } catch (err) {
       console.error(err);

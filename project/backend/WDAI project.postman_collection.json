@@ -19,15 +19,16 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:3003/api/fetch-products\n",
+					"raw": "http://localhost:3002/api/products/fetch-products",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3003",
+					"port": "3002",
 					"path": [
 						"api",
-						"fetch-products\n"
+						"products",
+						"fetch-products"
 					]
 				}
 			},
@@ -37,15 +38,19 @@
 			"name": "Get products",
 			"request": {
 				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Add product",
-			"request": {
-				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3002/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"api",
+						"products"
+					]
+				}
 			},
 			"response": []
 		},
@@ -53,7 +58,44 @@
 			"name": "Get one product",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3002/api/products/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"api",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3002/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"api",
+						"products"
+					]
+				}
 			},
 			"response": []
 		},
@@ -72,12 +114,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3003/api/products/1",
+					"raw": "http://localhost:3002/api/products/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3003",
+					"port": "3002",
 					"path": [
 						"api",
 						"products",
@@ -97,12 +139,12 @@
 					"raw": "{\r\n    \r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:3003/api/products/1",
+					"raw": "http://localhost:3002/api/products/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3003",
+					"port": "3002",
 					"path": [
 						"api",
 						"products",

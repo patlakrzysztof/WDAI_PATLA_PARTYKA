@@ -6,27 +6,20 @@ const sequelize = require("../database");
 const Users = require("../models/users");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const cors = require("cors");
 const authenticateToken = require("../util/tokenAuth");
+const cors = require("cors");
 
-sequelize.sync();
-
-const app = express();
-app.use(
+const router = express.Router();
+router.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
   })
 );
-app.use(express.json());
-app.use(cookieParser());
+router.use(express.json());
+router.use(cookieParser());
 
-app.listen(3002, (err) => {
-  if (err) process.exit(1);
-  console.log("Server running");
-});
-
-app.post("/users/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   const validators = {
     name: (v) => {
       if (v === undefined || v === null || String(v).trim() === "")
@@ -128,7 +121,7 @@ app.post("/users/register", async (req, res) => {
   }
 });
 
-app.post("/users/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   const validators = {
     mail: (v) => {
       if (v === undefined || v === null || String(v).trim() === "")
@@ -185,12 +178,12 @@ app.post("/users/login", async (req, res) => {
   }
 });
 
-app.post("/users/logout", authenticateToken, (req, res) => {
+router.post("/logout", authenticateToken, (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully" });
 });
 
-app.get("/users/me", authenticateToken, async (req, res) => {
+router.get("/me", authenticateToken, async (req, res) => {
   try {
     const user = await Users.findOne({ where: { id: req.user.id } });
     if (!user) {
@@ -206,3 +199,5 @@ function hasWhiteSpace(s) {
   const whitespaceChars = [" ", "\t", "\n"];
   return whitespaceChars.some((char) => s.includes(char));
 }
+
+module.exports = router;

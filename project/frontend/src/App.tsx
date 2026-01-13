@@ -14,19 +14,19 @@ import ShoppingCart from "./sites/ShoppingCart";
 import Products from "./sites/Products";
 import ProductPage from "./sites/ProductPage";
 import OrderDetails from "./sites/OrderDetails";
+import ProfilePage from "./sites/profile/ProfilePage";
 
 //types
-import type { Product } from "./types";
+import type { Product, User } from "./types";
 import type { CartItem } from "./types";
-import ProfilePage from "./sites/profile/ProfilePage";
 
 function App() {
   const [inCartItems, setInCartItems] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  const userId = 1;
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3003/api/products")
+    fetch("http://localhost:3002/api/products")
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched products:", data);
@@ -46,7 +46,19 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:3004/api/cart/${userId}`)
+    fetch("http://localhost:3002/users/me", {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Not logged in");
+        return res.json();
+      })
+      .then((data) => setUser(data))
+      .catch(() => setUser(null));
+  }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:3002/api/cart/${user?.id}`)
       .then((res) => res.json())
       .then((data) => {
         const mapped: CartItem[] = data.map((item: any) => ({
@@ -77,12 +89,19 @@ function App() {
           </Link>
         </div>
         <div className="flex flex-row gap-5">
-          <Link to="/cart">
-            <Badge badgeContent={inCartItems.length} color="primary">
-              <ShoppingCartIcon />
-            </Badge>
-          </Link>
-
+          {user ? (
+            <Link to="/cart">
+              <Badge badgeContent={inCartItems.length} color="primary">
+                <ShoppingCartIcon />
+              </Badge>
+            </Link>
+          ) : (
+            <Link to="/profile">
+              <Badge badgeContent={inCartItems.length} color="primary">
+                <ShoppingCartIcon />
+              </Badge>
+            </Link>
+          )}
           <Link to="/profile">
             <Avatar alt="avatar image" sx={{ width: 25, height: 25 }} />
           </Link>
@@ -96,7 +115,7 @@ function App() {
           path="/cart"
           element={
             <ShoppingCart
-              userId={userId}
+              user={user}
               inCartItems={inCartItems}
               setInCartItems={setInCartItems}
             />
@@ -107,7 +126,7 @@ function App() {
           path="/products/:productName"
           element={
             <ProductPage
-              userId={userId}
+              user={user}
               inCartItems={inCartItems}
               setInCartItems={setInCartItems}
               products={products}
