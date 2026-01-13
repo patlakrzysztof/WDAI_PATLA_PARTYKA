@@ -26,7 +26,7 @@ function App() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3003/api/products")
+    fetch("http://localhost:3002/api/products")
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched products:", data);
@@ -58,7 +58,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:3004/api/cart/${user?.id}`)
+    fetch(`http://localhost:3002/api/cart/${user?.id}`)
       .then((res) => res.json())
       .then((data) => {
         const mapped: CartItem[] = data.map((item: any) => ({

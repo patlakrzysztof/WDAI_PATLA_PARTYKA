@@ -56,7 +56,7 @@ function ProductPage({
       return;
     }
     try {
-      const response = await fetch("http://localhost:3004/api/cart", {
+      const response = await fetch("http://localhost:3002/api/cart", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -66,14 +66,20 @@ function ProductPage({
         }),
       });
 
-      const newItem = await response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Add to cart failed:", response.status, errorData);
+        return;
+      }
+
+      console.log("Add to cart response:");
 
       setInCartItems((prev) => {
         if (prev.some((i) => i.id === product.id)) {
           return prev;
         }
 
-        return [...prev, { ...newItem }];
+        return [...prev, { ...product, quantity }];
       });
     } catch (err) {
       console.error(err);

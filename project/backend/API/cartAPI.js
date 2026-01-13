@@ -5,21 +5,20 @@ const sequelize = require("../database");
 const CartDB = require("../models/cart");
 const ProductsDB = require("../models/products");
 
-sequelize.sync();
-
-const app = express();
-app.use(express.json());
+const router = express.Router();
+router.use(express.json());
 
 const cors = require("cors");
 const authenticateToken = require("../util/tokenAuth");
-app.use(cors());
 
-app.listen(3004, (err) => {
-  if (err) process.exit(1);
-  console.log("Server running");
-});
+router.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
-app.get("/api/cart/:userId", async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
     const items = await CartDB.findAll({ where: { userId } });
@@ -37,7 +36,7 @@ app.get("/api/cart/:userId", async (req, res) => {
   }
 });
 
-app.post("/api/cart", authenticateToken, async (req, res) => {
+router.post("/", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
     const { productId, quantity } = req.body;
@@ -55,7 +54,7 @@ app.post("/api/cart", authenticateToken, async (req, res) => {
   }
 });
 
-app.patch("/api/cart/:userId/:productId", async (req, res) => {
+router.patch("/:userId/:productId", async (req, res) => {
   try {
     const { userId, productId } = req.params;
     let { quantity } = req.body;
@@ -71,7 +70,7 @@ app.patch("/api/cart/:userId/:productId", async (req, res) => {
   }
 });
 
-app.delete("/api/cart/:userId/:productId", async (req, res) => {
+router.delete("/:userId/:productId", async (req, res) => {
   try {
     const { userId, productId } = req.params;
 
@@ -84,3 +83,5 @@ app.delete("/api/cart/:userId/:productId", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+module.exports = router;
