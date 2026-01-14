@@ -66,7 +66,7 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
           <Link to="/cart">
             <Button variant="outlined">To cart</Button>
           </Link>
-          <Link to="/your-order">
+          <Link to="/">
             <Button variant="contained" color="primary">
               Finalise
             </Button>

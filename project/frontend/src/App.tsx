@@ -59,7 +59,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:3002/api/cart/${user?.id}`)
+    if (!user) return;
+    fetch(`http://localhost:3002/api/cart/${user?.id}`, {
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((data) => {
         const mapped: CartItem[] = data.map((item: any) => ({
@@ -76,7 +79,7 @@ function App() {
         setInCartItems(mapped);
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [user]);
 
   return (
     <BrowserRouter>
