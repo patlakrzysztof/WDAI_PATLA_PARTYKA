@@ -27,7 +27,7 @@ interface ProductsProps {
 function Products({ products }: ProductsProps) {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<
-    "default" | "asc" | "desc" | "asc-rate" | "desc-rate"
+    "default" | "asc" | "desc" | "asc-rate" | "desc-rate" | "bestsellers"
   >("default");
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -51,6 +51,8 @@ function Products({ products }: ProductsProps) {
       if (sort === "desc") return b.price - a.price;
       if (sort === "asc-rate") return a.rating_rate - b.rating_rate;
       if (sort === "desc-rate") return b.rating_rate - a.rating_rate;
+      if (sort === "bestsellers")
+        return b.rating_count * b.rating_rate - a.rating_count * a.rating_rate;
       return 0;
     });
 
@@ -114,10 +116,19 @@ function Products({ products }: ProductsProps) {
             }}
             value={sort}
             onChange={(sortBy) =>
-              setSort(sortBy.target.value as "default" | "asc" | "desc")
+              setSort(
+                sortBy.target.value as
+                  | "default"
+                  | "asc"
+                  | "desc"
+                  | "asc-rate"
+                  | "desc-rate"
+                  | "bestsellers"
+              )
             }
           >
             <option value="default">Default</option>
+            <option value="bestsellers">Best sellers</option>
             <option value="asc">Price Ascending</option>
             <option value="desc">Price Descending</option>
             <option value="asc-rate">Rating Ascending</option>
