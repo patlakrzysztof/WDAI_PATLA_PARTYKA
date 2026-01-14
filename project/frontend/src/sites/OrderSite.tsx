@@ -60,13 +60,13 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
             <div className="flex flex-col gap-4">
               <Typography variant="h6">Contact & delivery</Typography>
               <Divider />
-              <Typography variant="h7">Contact</Typography>
+              <Typography variant="subtitle1">Contact</Typography>
               <TextField
                 fullWidth
                 label="Contact number"
                 value={contactPhone}
               />
-              <Typography variant="h7">Address</Typography>
+              <Typography variant="subtitle1">Address</Typography>
               <TextField
                 fullWidth
                 label="Delivery address"
