@@ -18,7 +18,7 @@ router.use(
   })
 );
 
-router.get("/:userId", async (req, res) => {
+router.get("/:userId", authenticateToken, async (req, res) => {
   try {
     const userId = req.params.userId;
     const items = await CartDB.findAll({ where: { userId } });

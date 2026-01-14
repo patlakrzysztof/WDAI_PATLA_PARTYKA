@@ -158,9 +158,11 @@ function ShoppingCart({
             <Link to="/products">
               <Button variant="outlined">Continue Shopping</Button>
             </Link>
-            <Button variant="contained" color="primary">
-              Checkout
-            </Button>
+            <Link to="/your-order">
+              <Button variant="contained" color="primary">
+                Checkout
+              </Button>
+            </Link>
           </CardActions>
         </Card>
       </div>

@@ -19,6 +19,7 @@ import ProfilePage from "./sites/profile/ProfilePage";
 //types
 import type { Product, User } from "./types";
 import type { CartItem } from "./types";
+import OrderSite from "./sites/OrderSite";
 
 function App() {
   const [inCartItems, setInCartItems] = useState<CartItem[]>([]);
@@ -58,7 +59,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:3002/api/cart/${user?.id}`)
+    if (!user) return;
+    fetch(`http://localhost:3002/api/cart/${user?.id}`, {
+      credentials: "include",
+    })
       .then((res) => res.json())
       .then((data) => {
         const mapped: CartItem[] = data.map((item: any) => ({
@@ -75,7 +79,7 @@ function App() {
         setInCartItems(mapped);
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [user]);
 
   return (
     <BrowserRouter>
@@ -111,6 +115,16 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route
+          path="/your-order"
+          element={
+            <OrderSite
+              user={user}
+              inCartItems={inCartItems}
+              setInCartItems={setInCartItems}
+            />
+          }
+        />
         <Route
           path="/cart"
           element={
