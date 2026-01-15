@@ -1,54 +1,87 @@
 import { useParams } from "react-router-dom";
 import type { Order } from "../types";
-import { Card, CardContent, Divider, Typography } from "@mui/material";
-import { useState } from "react";
-
-const order: Order = {
-  orderId: 101,
-  userId: 1,
-  orderDate: new Date("2023-11-15T14:30:00"),
-  sentDate: new Date("2023-11-16T09:00:00"),
-  inDate: new Date("2023-11-16T19:00:01"),
-  items: [
-    {
-      productId: 1,
-      productName: "shoes",
-      quantity: 2,
-      priceAtPurchase: 29.99,
-    },
-    {
-      productId: 3,
-      productName: "bag",
-      quantity: 1,
-      priceAtPurchase: 19.99,
-    },
-  ],
-  address: {
-    country: "Poland",
-    city: "Krakow",
-    zipCode: "30-001",
-    street: "Market Square",
-    houseNumber: 12,
-    flatNumber: 4,
-  },
-};
+import {
+  Card,
+  CardContent,
+  CircularProgress,
+  Divider,
+  Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 
 export default function OrderDetails() {
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [totalPrice, setTotalPrice] = useState(0);
   const { orderId } = useParams();
 
-  // Determine status based on dates
-  const initialStatus = order.inDate
-    ? "Completed"
-    : order.sentDate
-    ? "Sent"
-    : "Processing";
+  const [status, setStatus] = useState("Processing");
 
-  const [status, setStatus] = useState(initialStatus);
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const res = await fetch(`http://localhost:3002/orders/${orderId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
 
-  const totalPrice = order.items.reduce(
-    (sum, item) => sum + item.quantity * item.priceAtPurchase,
-    0
-  );
+        if (!res.ok) return;
+        const rawData = await res.json();
+
+        if (rawData) {
+          const formattedOrder: Order = {
+            ...rawData,
+            orderId: rawData.id,
+            orderDate: new Date(rawData.orderDate),
+            sentDate: rawData.sentDate ? new Date(rawData.sentDate) : null,
+            inDate: rawData.inDate ? new Date(rawData.inDate) : null,
+          };
+
+          setOrder(formattedOrder);
+
+          const tp = formattedOrder.items.reduce(
+            (sum, item) => sum + item.quantity * item.priceAtPurchase,
+            0
+          );
+          setTotalPrice(tp);
+
+          const newStatus = formattedOrder.inDate
+            ? "Completed"
+            : formattedOrder.sentDate
+            ? "Sent"
+            : "Processing";
+          setStatus(newStatus);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (orderId) {
+      getOrders();
+    }
+  }, [orderId]);
+
+  if (loading) {
+    return (
+      <div className="w-full flex flex-row justify-center items-center">
+        <CircularProgress color="secondary" />
+      </div>
+    );
+  }
+
+  if (!order) {
+    return (
+      <div className="w-full flex flex-row justify-center items-center">
+        <h2>No order found</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex flex-col items-center p-4">

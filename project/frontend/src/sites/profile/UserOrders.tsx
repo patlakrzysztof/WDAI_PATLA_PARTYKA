@@ -12,38 +12,41 @@ import {
 } from "@mui/material";
 import type { Order } from "../../types";
 import { Link } from "react-router-dom";
-
-const mockOrders: Order[] = Array.from({ length: 10 }, (_, index) => ({
-  orderId: index + 1,
-  userId: 1,
-  orderDate: new Date(2024, 0, index + 1),
-  sentDate: index < 8 ? new Date(2024, 0, index + 2) : null,
-  inDate: index < 6 ? new Date(2024, 0, index + 5) : null,
-  items: [
-    {
-      productId: (index % 5) + 1,
-      productName: "someName",
-      quantity: (index % 3) + 1,
-      priceAtPurchase: 19.99 + index * 5,
-    },
-    {
-      productId: (index % 5) + 2,
-      productName: "someName",
-      quantity: 1,
-      priceAtPurchase: 9.99,
-    },
-  ],
-  address: {
-    country: "Poland",
-    city: index % 2 === 0 ? "Warsaw" : "Krakow",
-    zipCode: "00-001",
-    street: "Main Street",
-    houseNumber: index + 1,
-    flatNumber: index % 3 === 0 ? index : null,
-  },
-}));
+import { useEffect, useState } from "react";
 
 export default function UserOrders() {
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const res = await fetch("http://localhost:3002/orders/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        if (!res.ok) return;
+        const rawData = await res.json();
+
+        if (rawData) {
+          const formattedOrders: Order[] = rawData.map((order) => ({
+            ...order,
+            orderId: order.id,
+            orderDate: new Date(order.orderDate),
+            sentDate: order.sentDate ? new Date(order.sentDate) : null,
+            inDate: order.inDate ? new Date(order.inDate) : null,
+          }));
+          setOrders(formattedOrders);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    getOrders();
+  }, []);
+
   const calculateStatus = (order: Order) => {
     if (order.inDate) return "Completed";
     else if (order.sentDate) return "Sent";
@@ -80,7 +83,7 @@ export default function UserOrders() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {mockOrders.map((order) => {
+            {orders.map((order) => {
               const status = calculateStatus(order);
               const total = calculateTotal(order);
               return (

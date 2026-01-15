@@ -19,11 +19,11 @@ const Orders = sequelize.define(
     },
     sentDate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     inDate: {
       type: DataTypes.DATE,
-      allowNull: false,
+      allowNull: true,
     },
     items: {
       type: DataTypes.JSON,
