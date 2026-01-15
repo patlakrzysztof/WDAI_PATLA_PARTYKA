@@ -7,6 +7,7 @@ const sequelize = require("../database");
 const usersRoutes = require("./usersAPI");
 const productsRoutes = require("./productsAPI");
 const cartRoutes = require("./cartAPI");
+const ordersRoutes = require("./ordersAPI");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use("/users", usersRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/orders", ordersRoutes);
 
 sequelize.sync().then(() => {
   app.listen(3002, () => {

@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"npm run app\"",
+    "start": "npm run app",
     "app": "nodemon ./API/app.js"
   },
   "dependencies": {
