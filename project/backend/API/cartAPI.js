@@ -54,7 +54,7 @@ router.post("/", authenticateToken, async (req, res) => {
   }
 });
 
-router.patch("/:productId", async (req, res) => {
+router.patch("/:productId", authenticateToken, async (req, res) => {
   try {
     const { productId } = req.params;
     const userId = req.user.id;
@@ -71,7 +71,7 @@ router.patch("/:productId", async (req, res) => {
   }
 });
 
-router.delete("/:productId", async (req, res) => {
+router.delete("/:productId", authenticateToken, async (req, res) => {
   try {
     const { productId } = req.params;
     const userId = req.user.id;
