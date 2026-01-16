@@ -27,8 +27,9 @@ function ShoppingCart({
 }: ShoppingCartProps) {
   const handleQuantityChange = async (product: CartItem, quantity: number) => {
     try {
-      await fetch(`http://localhost:3002/api/cart/${user?.id}/${product.id}`, {
+      await fetch(`http://localhost:3002/api/cart/${product.id}`, {
         method: "PATCH",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ quantity }),
       });
@@ -43,8 +44,9 @@ function ShoppingCart({
 
   const handleDelete = async (productId: number) => {
     try {
-      await fetch(`http://localhost:3002/api/cart/${user?.id}/${productId}`, {
+      await fetch(`http://localhost:3002/api/cart/${productId}`, {
         method: "DELETE",
+        credentials: "include",
       });
 
       setInCartItems((prev) => prev.filter((item) => item.id !== productId));

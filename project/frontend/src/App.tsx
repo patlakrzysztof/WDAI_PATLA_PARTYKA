@@ -60,7 +60,7 @@ function App() {
 
   useEffect(() => {
     if (!user) return;
-    fetch(`http://localhost:3002/api/cart/${user?.id}`, {
+    fetch(`http://localhost:3002/api/cart`, {
       credentials: "include",
     })
       .then((res) => res.json())

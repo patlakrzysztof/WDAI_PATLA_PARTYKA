@@ -18,9 +18,9 @@ router.use(
   })
 );
 
-router.get("/:userId", authenticateToken, async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.user.id;
     const items = await CartDB.findAll({ where: { userId } });
 
     const itemsWithProducts = await Promise.all(
@@ -54,9 +54,10 @@ router.post("/", authenticateToken, async (req, res) => {
   }
 });
 
-router.patch("/:userId/:productId", async (req, res) => {
+router.patch("/:productId", async (req, res) => {
   try {
-    const { userId, productId } = req.params;
+    const { productId } = req.params;
+    const userId = req.user.id;
     let { quantity } = req.body;
 
     const item = await CartDB.findOne({ where: { userId, productId } });
@@ -70,9 +71,10 @@ router.patch("/:userId/:productId", async (req, res) => {
   }
 });
 
-router.delete("/:userId/:productId", async (req, res) => {
+router.delete("/:productId", async (req, res) => {
   try {
-    const { userId, productId } = req.params;
+    const { productId } = req.params;
+    const userId = req.user.id;
 
     const item = await CartDB.findOne({ where: { userId, productId } });
     if (!item) return res.status(404).json({ error: "Item not found" });
