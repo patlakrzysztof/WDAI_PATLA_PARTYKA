@@ -96,10 +96,20 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
                   </Typography>
                 </div>
               ))}
+              <div className="flex justify-between">
+                <Typography>Shipment:</Typography>
+                <Typography>{cartSummary.totalPrice > 20 ? 0 : 5} $</Typography>
+              </div>
 
               <div className="flex justify-between font-bold text-lg pt-2">
                 <Typography>Total:</Typography>
-                <Typography>{cartSummary.totalPrice.toFixed(2)} $</Typography>
+                <Typography>
+                  {(
+                    cartSummary.totalPrice +
+                    (cartSummary.totalPrice > 20 ? 0 : 5)
+                  ).toFixed(2)}{" "}
+                  $
+                </Typography>
               </div>
             </div>
           </CardContent>
