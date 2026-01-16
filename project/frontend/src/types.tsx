@@ -36,7 +36,6 @@ export interface Address {
   zipCode: string;
   street: string;
   houseNumber: number;
-  flatNumber: number | null;
 }
 
 export interface OrderItem {
@@ -53,5 +52,7 @@ export interface Order {
   sentDate: Date | null;
   inDate: Date | null;
   items: OrderItem[];
+  shipment: number;
   address: Address;
+  contact: string;
 }

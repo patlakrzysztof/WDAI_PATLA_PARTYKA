@@ -46,6 +46,10 @@ const Orders = sequelize.define(
         },
       },
     },
+    shipment: {
+      type: DataTypes.JSON,
+      allowNull: false,
+    },
     address: {
       type: DataTypes.JSON,
       allowNull: false,
@@ -64,6 +68,10 @@ const Orders = sequelize.define(
           }
         },
       },
+    },
+    contact: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {

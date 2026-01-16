@@ -8,6 +8,7 @@ const usersRoutes = require("./usersAPI");
 const productsRoutes = require("./productsAPI");
 const cartRoutes = require("./cartAPI");
 const ordersRoutes = require("./ordersAPI");
+const ProductsDB = require("../models/products");
 
 const app = express();
 
@@ -25,9 +26,15 @@ app.use("/users", usersRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/orders", ordersRoutes);
+const { fetchProducts } = productsRoutes;
 
-sequelize.sync().then(() => {
+sequelize.sync().then(async () => {
   app.listen(3002, () => {
     console.log("Server running on port 3002");
   });
+
+  const count = await ProductsDB.count();
+  if (count === 0) {
+    await fetchProducts();
+  }
 });

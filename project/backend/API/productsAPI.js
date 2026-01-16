@@ -96,7 +96,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.post("/fetch-products", async (req, res) => {
+async function fetchProducts() {
   try {
     const response = await fetch("https://fakestoreapi.com/products");
     const products = await response.json();
@@ -113,10 +113,11 @@ router.post("/fetch-products", async (req, res) => {
       });
     }
 
-    res.json({ message: "Products imported" });
+    console.log({ message: "Products imported" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error({ "Importing products failed": err.message });
   }
-});
+}
 
 module.exports = router;
+module.exports.fetchProducts = fetchProducts;
