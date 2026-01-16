@@ -52,6 +52,9 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
       !address.country
     )
       return alert("Please fill in all address fields");
+    if (inCartItems.length === 0) {
+      return alert("No elements in cart");
+    }
     const orderItems = inCartItems.map((item) => ({
       productId: item.id,
       productName: item.title,
@@ -79,7 +82,7 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
       }
 
       const newOrder = await response.json();
-      alert("Order successfully created! Order ID: " + newOrder.id);
+      alert("Order successfully created!");
       for (const product of inCartItems) {
         try {
           const productId = product.id;
