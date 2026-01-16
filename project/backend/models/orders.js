@@ -65,6 +65,10 @@ const Orders = sequelize.define(
         },
       },
     },
+    contact: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     timestamps: false,

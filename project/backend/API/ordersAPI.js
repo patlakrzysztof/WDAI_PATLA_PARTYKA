@@ -50,4 +50,23 @@ router.get("/:orderId", authenticateToken, async (req, res) => {
   }
 });
 
+router.post("/", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { orderDate, items, address, contact } = req.body;
+    console.log("BODY:", req.body);
+
+    const newItem = await Orders.create({
+      userId,
+      orderDate,
+      items,
+      address,
+      contact,
+    });
+    res.status(201).json(newItem);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

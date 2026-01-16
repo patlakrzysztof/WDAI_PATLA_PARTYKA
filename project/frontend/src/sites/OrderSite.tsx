@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import React, { useState } from "react";
-import type { CartItem, User } from "../types";
+import type { Address, CartItem, OrderItem, User } from "../types";
 import {
   Button,
   Card,
@@ -19,8 +19,14 @@ interface OrderSiteProps {
 }
 
 function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
-  const [contactPhone, setContactPhone] = useState<Text>();
-  const [address, setAddress] = useState<Text>();
+  const [contactPhone, setContactPhone] = useState<string>();
+  const [address, setAddress] = useState<Address>({
+    country: "",
+    city: "",
+    zipCode: "",
+    street: "",
+    houseNumber: 0,
+  });
   const cartSummary = Array.from(inCartItems.values()).reduce(
     (acc, item) => {
       acc.totalItems += item.quantity;
@@ -29,6 +35,58 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
     },
     { totalItems: 0, totalPrice: 0 }
   );
+  const handleAddressChange = (
+    field: keyof Address,
+    value: string | number
+  ) => {
+    setAddress((prev) => ({ ...prev, [field]: value }));
+  };
+
+  async function finaliseOrder() {
+    if (!user) return alert("User not logged in");
+    if (!contactPhone) return alert("Please enter your contact number");
+    if (
+      !address.street ||
+      !address.city ||
+      !address.zipCode ||
+      !address.country
+    )
+      return alert("Please fill in all address fields");
+    const orderItems = inCartItems.map((item) => ({
+      productId: item.id,
+      productName: item.title,
+      quantity: item.quantity,
+      priceAtPurchase: item.price,
+    }));
+    try {
+      const response = await fetch("http://localhost:3002/orders", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderDate: new Date(),
+          items: orderItems,
+          address: address,
+          contact: contactPhone,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to create order");
+      }
+
+      const newOrder = await response.json();
+      alert("Order successfully created! Order ID: " + newOrder.id);
+      setInCartItems([]);
+    } catch (err: any) {
+      console.error(err);
+      alert("Error creating order: " + err.message);
+    }
+  }
+
   return (
     <div className="flex justify-center items-center">
       <div className="flex justify-center p-6">
@@ -65,16 +123,50 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
                 fullWidth
                 label="Contact number"
                 value={contactPhone}
+                onChange={(e) => setContactPhone(e.target.value)}
               />
               <Typography variant="subtitle1">Address</Typography>
               <TextField
                 fullWidth
-                label="Delivery address"
-                placeholder="Street, building number, city, postal code"
-                multiline
-                rows={3}
+                label="Country"
+                placeholder="Country"
                 color="primary"
-                value={address}
+                value={address.country}
+                onChange={(e) => handleAddressChange("country", e.target.value)}
+              />
+              <TextField
+                fullWidth
+                label="City"
+                placeholder="City"
+                color="primary"
+                value={address.city}
+                onChange={(e) => handleAddressChange("city", e.target.value)}
+              />
+              <TextField
+                fullWidth
+                label="zipCode"
+                placeholder="zipCode"
+                color="primary"
+                value={address.zipCode}
+                onChange={(e) => handleAddressChange("zipCode", e.target.value)}
+              />
+              <TextField
+                fullWidth
+                label="Street"
+                placeholder="Street"
+                color="primary"
+                value={address.street}
+                onChange={(e) => handleAddressChange("street", e.target.value)}
+              />
+              <TextField
+                fullWidth
+                label="House nr"
+                placeholder="House nr"
+                color="primary"
+                value={address.houseNumber}
+                onChange={(e) =>
+                  handleAddressChange("houseNumber", e.target.value)
+                }
               />
             </div>
 
@@ -118,7 +210,12 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
             <Link to="/cart">
               <Button variant="outlined">Back to cart</Button>
             </Link>
-            <Button variant="contained" color="primary" size="large">
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              onClick={() => finaliseOrder()}
+            >
               Finalise order
             </Button>
           </CardActions>
