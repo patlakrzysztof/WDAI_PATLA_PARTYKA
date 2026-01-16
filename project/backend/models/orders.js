@@ -46,6 +46,10 @@ const Orders = sequelize.define(
         },
       },
     },
+    shipment: {
+      type: DataTypes.JSON,
+      allowNull: false,
+    },
     address: {
       type: DataTypes.JSON,
       allowNull: false,

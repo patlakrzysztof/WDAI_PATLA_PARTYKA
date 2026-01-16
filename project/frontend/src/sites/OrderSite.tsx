@@ -71,6 +71,7 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
         body: JSON.stringify({
           orderDate: new Date(),
           items: orderItems,
+          shipment: cartSummary.totalPrice > 20 ? 0 : 5,
           address: address,
           contact: contactPhone,
         }),

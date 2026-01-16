@@ -52,6 +52,7 @@ export interface Order {
   sentDate: Date | null;
   inDate: Date | null;
   items: OrderItem[];
+  shipment: number;
   address: Address;
   contact: string;
 }
