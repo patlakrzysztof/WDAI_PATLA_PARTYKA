@@ -80,7 +80,21 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
 
       const newOrder = await response.json();
       alert("Order successfully created! Order ID: " + newOrder.id);
-      setInCartItems([]);
+      for (const product of inCartItems) {
+        try {
+          const productId = product.id;
+          await fetch(`http://localhost:3002/api/cart/${productId}`, {
+            method: "DELETE",
+            credentials: "include",
+          });
+
+          setInCartItems((prev) =>
+            prev.filter((item) => item.id !== productId)
+          );
+        } catch (err) {
+          console.error(err);
+        }
+      }
     } catch (err: any) {
       console.error(err);
       alert("Error creating order: " + err.message);
