@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database");
 
-const ProductsDB = sequelize.define(
-  "ProductsDB",
+const Reviews = sequelize.define(
+  "Reviews",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -10,24 +10,20 @@ const ProductsDB = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    title: {
+    username: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    price: {
+    productId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    message: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    rating: {
       type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    category: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    image: {
-      type: DataTypes.STRING,
       allowNull: false,
     },
   },
@@ -36,4 +32,4 @@ const ProductsDB = sequelize.define(
   },
 );
 
-module.exports = ProductsDB;
+module.exports = Reviews;
