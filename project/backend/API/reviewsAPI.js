@@ -1,7 +1,4 @@
-require("dotenv").config();
-const jwtKey = process.env.JWT_SECRET;
 const express = require("express");
-const sequelize = require("../database");
 const Products = require("../models/products");
 const Reviews = require("../models/reviews");
 
@@ -49,7 +46,7 @@ router.post("/", async (req, res) => {
 
 router.get("/:productId", async (req, res) => {
   const productId = req.params.productId;
-  if (!productId) return res.status(400).json({ error: "No status given" });
+  if (!productId) return res.status(400).json({ error: "No productId given" });
 
   try {
     const product = await Products.findOne({ where: { id: productId } });
@@ -66,7 +63,7 @@ router.get("/:productId", async (req, res) => {
 
 router.get("/rating/:productId", async (req, res) => {
   const productId = req.params.productId;
-  if (!productId) return res.status(400).json({ error: "No status given" });
+  if (!productId) return res.status(400).json({ error: "No productId given" });
 
   try {
     const product = await Products.findOne({ where: { id: productId } });
