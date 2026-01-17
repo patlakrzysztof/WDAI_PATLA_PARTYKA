@@ -84,7 +84,7 @@ export default function UserInfo() {
           <div className="flex justify-between">
             <Typography color="secondary">Email:</Typography>
             <Typography fontWeight="medium">
-              {isShown ? user.mail : "●●●●●●@gmail.com"}
+              {isShown ? user.mail : "●●●●●●@●●●●●●●●●"}
             </Typography>
           </div>
           <div className="flex justify-between">

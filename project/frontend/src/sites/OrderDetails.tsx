@@ -44,15 +44,15 @@ export default function OrderDetails() {
 
           const tp = formattedOrder.items.reduce(
             (sum, item) => sum + item.quantity * item.priceAtPurchase,
-            0
+            0,
           );
-          setTotalPrice(tp);
+          setTotalPrice(tp + (formattedOrder.shipment?.cost || 0));
 
           const newStatus = formattedOrder.inDate
             ? "Completed"
             : formattedOrder.sentDate
-            ? "Sent"
-            : "Processing";
+              ? "Sent"
+              : "Processing";
           setStatus(newStatus);
         }
       } catch (e) {
@@ -109,8 +109,8 @@ export default function OrderDetails() {
                 status === "Completed"
                   ? "bg-green-100 text-green-800"
                   : status === "Sent"
-                  ? "bg-blue-100 text-blue-800"
-                  : "bg-orange-100 text-orange-800"
+                    ? "bg-blue-100 text-blue-800"
+                    : "bg-orange-100 text-orange-800"
               }`}
             >
               {status.toUpperCase()}
@@ -171,6 +171,13 @@ export default function OrderDetails() {
 
               <div className="mt-6 flex justify-end border-t border-gray-400 pt-4">
                 <div className="text-right">
+                  <Typography sx={{ fontSize: "0.9rem" }} color="black">
+                    Shipping ({order.shipment.method})
+                  </Typography>
+                  <Typography sx={{ fontSize: "1.1rem" }} className="mb-2">
+                    {order.shipment.cost.toFixed(2)}$
+                  </Typography>
+
                   <Typography sx={{ fontSize: "0.9rem" }}>
                     Total Amount
                   </Typography>
@@ -187,9 +194,6 @@ export default function OrderDetails() {
                 <div className="text-gray-700 space-y-1">
                   <Typography variant="body1">
                     {order.address.street} {order.address.houseNumber}
-                    {order.address.flatNumber
-                      ? ` / ${order.address.flatNumber}`
-                      : ""}
                   </Typography>
                   <Typography variant="body1">
                     {order.address.zipCode} {order.address.city}
@@ -198,6 +202,13 @@ export default function OrderDetails() {
                     {order.address.country.toUpperCase()}
                   </Typography>
                 </div>
+
+                <Divider sx={{ my: 2 }} />
+
+                <Typography variant="h6">Contact</Typography>
+                <Typography variant="body1" className="text-gray-700">
+                  {order.contact}
+                </Typography>
               </div>
             </div>
           </div>

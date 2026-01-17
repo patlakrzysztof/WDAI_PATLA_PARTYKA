@@ -11,9 +11,9 @@ async function usersInit() {
       body: JSON.stringify({
         name: "Mateusz",
         surname: "Jarosz",
-        nickname: "Prowadzący",
+        nickname: "superProwadzący123",
         mail: "mjarosz@agh.edu.pl",
-        phone: "+48 2 3022 3433",
+        phone: "+48 230 223 433",
         password: "mjarosz123",
       }),
     });
@@ -27,7 +27,7 @@ async function usersInit() {
       body: JSON.stringify({
         name: "Mateusz",
         surname: "Partyka",
-        nickname: "Uczeń",
+        nickname: "boskiUczeń",
         mail: "mpartyka@student.agh.edu.pl",
         phone: "+48 600 100 200",
         password: "mpartyka123",
@@ -43,7 +43,7 @@ async function usersInit() {
       body: JSON.stringify({
         name: "Krzysztof",
         surname: "Patla",
-        nickname: "Uczeń",
+        nickname: "nawetLepszyUczeń",
         mail: "kpatla@student.agh.edu.pl",
         phone: "+48 500 600 700",
         password: "kpatla123",

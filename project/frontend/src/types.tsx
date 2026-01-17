@@ -35,7 +35,7 @@ export interface Address {
   city: string;
   zipCode: string;
   street: string;
-  houseNumber: number;
+  houseNumber: string;
 }
 
 export interface OrderItem {
@@ -52,7 +52,10 @@ export interface Order {
   sentDate: Date | null;
   inDate: Date | null;
   items: OrderItem[];
-  shipment: number;
+  shipment: {
+    method: string;
+    cost: number;
+  };
   address: Address;
   contact: string;
 }
