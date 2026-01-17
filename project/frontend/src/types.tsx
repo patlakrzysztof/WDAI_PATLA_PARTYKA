@@ -59,3 +59,10 @@ export interface Order {
   address: Address;
   contact: string;
 }
+
+export interface Review {
+  id: number;
+  productId: number;
+  message: string;
+  rating: number;
+}
