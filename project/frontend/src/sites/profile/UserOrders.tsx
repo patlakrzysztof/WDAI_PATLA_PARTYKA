@@ -54,9 +54,12 @@ export default function UserOrders() {
   };
 
   const calculateTotal = (order: Order) => {
-    return order.items.reduce(
-      (acc, curr) => acc + curr.priceAtPurchase * curr.quantity,
-      0
+    return (
+      order.shipment +
+      order.items.reduce(
+        (acc, curr) => acc + curr.priceAtPurchase * curr.quantity,
+        0,
+      )
     );
   };
 
@@ -95,8 +98,8 @@ export default function UserOrders() {
                         status === "Completed"
                           ? "bg-[#e6f4ea] text-[#1e4620]"
                           : status === "Sent"
-                          ? "bg-[#e8f0fe] text-[#174ea6]"
-                          : "bg-[#fce8e6] text-[#c5221f]"
+                            ? "bg-[#e8f0fe] text-[#174ea6]"
+                            : "bg-[#fce8e6] text-[#c5221f]"
                       }`}
                     >
                       {status.toUpperCase()}

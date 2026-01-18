@@ -46,7 +46,7 @@ export default function OrderDetails() {
             (sum, item) => sum + item.quantity * item.priceAtPurchase,
             0,
           );
-          setTotalPrice(tp + (formattedOrder.shipment?.cost || 0));
+          setTotalPrice(tp + (formattedOrder.shipment || 0));
 
           const newStatus = formattedOrder.inDate
             ? "Completed"
@@ -171,13 +171,12 @@ export default function OrderDetails() {
 
               <div className="mt-6 flex justify-end border-t border-gray-400 pt-4">
                 <div className="text-right">
-                  <Typography sx={{ fontSize: "0.9rem" }} color="black">
-                    Shipping ({order.shipment.method})
+                  <Typography sx={{ fontSize: "0.7rem" }} color="grey">
+                    Shipment
                   </Typography>
                   <Typography sx={{ fontSize: "1.1rem" }} className="mb-2">
-                    {order.shipment.cost.toFixed(2)}$
+                    {order.shipment.toFixed(2)}$
                   </Typography>
-
                   <Typography sx={{ fontSize: "0.9rem" }}>
                     Total Amount
                   </Typography>
