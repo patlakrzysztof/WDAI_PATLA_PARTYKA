@@ -54,10 +54,12 @@ function App() {
           description: product.description,
           category: product.category,
           image: product.image,
-          rating_rate: reviews.find((item) => item.productId === product.id)
-            ?.rating_rate,
-          rating_count: reviews.find((item) => item.productId === product.id)
-            ?.rating_count,
+          rating_rate:
+            reviews.find((item) => item.productId === product.id)
+              ?.rating_rate ?? 0,
+          rating_count:
+            reviews.find((item) => item.productId === product.id)
+              ?.rating_count ?? 0,
         }));
         setProducts(mappedProducts);
       })
