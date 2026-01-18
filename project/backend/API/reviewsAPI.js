@@ -14,10 +14,36 @@ router.use(
   }),
 );
 
-router.get("/", async (req, res) => {
+router.get("/rating", async (req, res) => {
   try {
-    const reviews = await Reviews.findAll();
-    res.json(reviews);
+    const reviews = await Reviews.findAll({
+      attributes: ["productId", "rating"],
+      raw: true,
+    });
+
+    const ratingMap = {};
+
+    reviews.forEach(({ productId, rating }) => {
+      if (!ratingMap[productId]) {
+        ratingMap[productId] = {
+          productId,
+          rating_rate: 0,
+          rating_count: 0,
+        };
+      }
+
+      ratingMap[productId].rating_rate += rating;
+      ratingMap[productId].rating_count += 1;
+    });
+
+    const result = Object.values(ratingMap).map((item) => ({
+      productId: item.productId,
+      rating_rate:
+        item.rating_rate > 0 ? item.rating_rate / item.rating_count : 0,
+      rating_count: item.rating_count,
+    }));
+
+    res.json(result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

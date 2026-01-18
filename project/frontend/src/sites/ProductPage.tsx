@@ -192,7 +192,7 @@ function ProductPage({
                   readOnly
                   className="mb-3"
                 />
-                ({product.rating_count})
+                ({product.rating_count > 0 ? product.rating_count : 0})
               </div>
               <Typography gutterBottom variant="h4" component="div">
                 {product.price}$
