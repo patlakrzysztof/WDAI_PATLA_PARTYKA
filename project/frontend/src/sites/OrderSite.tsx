@@ -25,7 +25,7 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
     city: "",
     zipCode: "",
     street: "",
-    houseNumber: 0,
+    houseNumber: "",
   });
   const cartSummary = Array.from(inCartItems.values()).reduce(
     (acc, item) => {
@@ -33,11 +33,11 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
       acc.totalPrice += item.price * item.quantity;
       return acc;
     },
-    { totalItems: 0, totalPrice: 0 }
+    { totalItems: 0, totalPrice: 0 },
   );
   const handleAddressChange = (
     field: keyof Address,
-    value: string | number
+    value: string | number,
   ) => {
     setAddress((prev) => ({ ...prev, [field]: value }));
   };
@@ -93,7 +93,7 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
           });
 
           setInCartItems((prev) =>
-            prev.filter((item) => item.id !== productId)
+            prev.filter((item) => item.id !== productId),
           );
         } catch (err) {
           console.error(err);

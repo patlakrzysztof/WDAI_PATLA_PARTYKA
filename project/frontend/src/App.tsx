@@ -38,8 +38,6 @@ function App() {
           description: product.description,
           category: product.category,
           image: product.image,
-          rating_rate: product.rating_rate,
-          rating_count: product.rating_count,
         }));
         setProducts(mappedProducts);
       })
