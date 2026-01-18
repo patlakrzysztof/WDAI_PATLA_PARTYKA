@@ -70,7 +70,16 @@ function Products({ products }: ProductsProps) {
         sx={{ backgroundColor: "primary.main" }}
       >
         <CardContent className="flex flex-col justify-center items-center gap-10">
-          <Typography variant="h3" color="textSecondary">
+          <Typography
+            variant="h3"
+            color="textSecondary"
+            sx={{
+              fontSize: {
+                xs: "2rem",
+                md: "3rem",
+              },
+            }}
+          >
             OUR PRODUCTS :
           </Typography>
         </CardContent>

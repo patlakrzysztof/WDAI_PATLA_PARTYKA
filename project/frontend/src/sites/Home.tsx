@@ -5,26 +5,52 @@ import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 
 function HomePage() {
   return (
-    <div className="flex flex-col w-screen h-screen">
+    <div className="flex flex-col w-screen min-h-screen">
       <Card
-        className="flex justify-center p-10 w-screen"
+        className="flex justify-center p-4 md:p-10 w-screen"
         sx={{ backgroundColor: "primary.main" }}
       >
         <CardContent className="flex flex-col justify-center items-center gap-10">
-          <Typography variant="h3" color="textSecondary">
+          <Typography
+            variant="h3"
+            color="textSecondary"
+            sx={{
+              fontSize: {
+                xs: "2rem",
+                md: "3rem",
+              },
+            }}
+          >
             Pat & Par
           </Typography>
-          <Typography variant="h6" color="textSecondary">
+          <Typography
+            variant="h6"
+            color="textSecondary"
+            sx={{
+              fontSize: {
+                xs: "0.9rem",
+                md: "1.1rem",
+              },
+              textAlign: "center",
+            }}
+          >
             We are the best online shop that u can imagine!
             <br /> We sell the best quality products!
             <br /> All of them are eco-friendly!
           </Typography>
         </CardContent>
       </Card>
-      <div className="flex p-10 flex-row justify-around">
+      <div className="flex flex-col md:flex-row gap-6 p-4 md:p-10 justify-around">
         <Card
-          className="flex justify-center items-center"
-          sx={{ width: 1 / 4, backgroundColor: "secondary.main" }}
+          className="flex justify-center items-center "
+          sx={{
+            width: {
+              xs: "100%",
+              md: "30%",
+              lg: "25%",
+            },
+            backgroundColor: "secondary.main",
+          }}
         >
           <CardContent className="flex flex-col justify-center items-center gap-2">
             <LocalShippingIcon fontSize="large" />
@@ -35,7 +61,14 @@ function HomePage() {
         </Card>
         <Card
           className="flex justify-center items-center"
-          sx={{ width: 1 / 4, backgroundColor: "secondary.main" }}
+          sx={{
+            width: {
+              xs: "100%",
+              md: "30%",
+              lg: "25%",
+            },
+            backgroundColor: "secondary.main",
+          }}
         >
           <CardContent className="flex flex-col justify-center items-center gap-2">
             <DiscountIcon fontSize="large" />
@@ -48,7 +81,14 @@ function HomePage() {
         </Card>
         <Card
           className="flex justify-center items-center"
-          sx={{ width: 1 / 4, backgroundColor: "secondary.main" }}
+          sx={{
+            width: {
+              xs: "100%",
+              md: "30%",
+              lg: "25%",
+            },
+            backgroundColor: "secondary.main",
+          }}
         >
           <CardContent className="flex flex-col justify-center items-center gap-2">
             <CurrencyExchangeIcon fontSize="large" />

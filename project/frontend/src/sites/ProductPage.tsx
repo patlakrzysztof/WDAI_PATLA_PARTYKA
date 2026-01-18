@@ -164,9 +164,15 @@ function ProductPage({
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-5">
+    <div className="flex flex-col justify-center items-center gap-5 px-2 md:px-0">
       <div className="flex justify-center items-center gap-5">
-        <Card variant="outlined" sx={{ maxWidth: 700 }}>
+        <Card
+          variant="outlined"
+          sx={{
+            width: "100%",
+            maxWidth: 700,
+          }}
+        >
           <CardContent sx={{ p: 2 }}>
             <div className="flex flex-row items-center justify-between gap-5">
               <Typography gutterBottom variant="h5" component="div">
@@ -174,11 +180,11 @@ function ProductPage({
               </Typography>
             </div>
             <Divider />
-            <div className="flex flex-row gap-10 mt-5">
+            <div className="flex flex-col md:flex-row gap-6 mt-5">
               <img
                 src={product.image}
                 alt={product.title}
-                className="w-80 h-80 object-contain mb-5"
+                className="w-full max-w-[280px] md:max-w-[320px] h-auto object-contain mx-auto"
               />
               <div className="flex flex-col justify-between">
                 <Typography gutterBottom variant="h6" component="div">
@@ -239,7 +245,10 @@ function ProductPage({
         <Typography variant="h5">Customer Reviews</Typography>
         <div className="mt-5">
           <Paper square>
-            <Card variant="outlined" sx={{ maxWidth: 700, mt: 2 }}>
+            <Card
+              variant="outlined"
+              sx={{ width: "100%", maxWidth: 700, mt: 2 }}
+            >
               <CardContent>
                 <Typography variant="h6">Add your review:</Typography>
                 <Rating
@@ -275,7 +284,7 @@ function ProductPage({
                 </Button>
               </CardContent>
             </Card>
-            <List sx={{ mb: 2, width: 700 }}>
+            <List sx={{ mb: 2, width: "100%", maxWidth: 700 }}>
               {reviews.map(({ id, username, message, rating }) => (
                 <React.Fragment key={id}>
                   <ListItemButton>
