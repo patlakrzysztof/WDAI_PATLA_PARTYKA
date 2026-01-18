@@ -76,19 +76,43 @@ export default function UserInfo() {
 
         <div className="flex flex-col gap-3 mt-4">
           <div className="flex justify-between">
-            <Typography color="secondary">ID:</Typography>
+            <Typography
+              color="secondary"
+              sx={{
+                display: "none",
+                "@media (min-width: 430px)": { display: "block" },
+              }}
+            >
+              ID:
+            </Typography>
             <Typography fontWeight="medium">
               #{isShown ? user.id : "●●●●●●"}
             </Typography>
           </div>
           <div className="flex justify-between">
-            <Typography color="secondary">Email:</Typography>
+            <Typography
+              color="secondary"
+              sx={{
+                display: "none",
+                "@media (min-width: 430px)": { display: "block" },
+              }}
+            >
+              Email:
+            </Typography>
             <Typography fontWeight="medium">
               {isShown ? user.mail : "●●●●●●@●●●●●●●●●"}
             </Typography>
           </div>
           <div className="flex justify-between">
-            <Typography color="secondary">Phone:</Typography>
+            <Typography
+              color="secondary"
+              sx={{
+                display: "none",
+                "@media (min-width: 430px)": { display: "block" },
+              }}
+            >
+              Phone:
+            </Typography>
             {isShown ? (
               <Typography fontWeight="medium">
                 {user.phone ? user.phone : "-- --- ---"}

@@ -88,11 +88,11 @@ export default function OrderDetails() {
       <Card sx={{ width: "100%", maxWidth: "900px" }}>
         <CardContent>
           <div className="mb-6 flex flex-col sm:flex-row justify-between items-center">
-            <div>
+            <div className="text-center sm:text-left">
               <Typography variant="h4" component="h1" fontWeight="bold">
                 Order Details
               </Typography>
-              <Typography variant="subtitle1" color="gray">
+              <Typography sx={{ size: "1rem" }} color="gray">
                 Placed on {order.orderDate.toLocaleDateString()}
               </Typography>
             </div>
@@ -142,7 +142,7 @@ export default function OrderDetails() {
 
           <Divider />
 
-          <div className="flex flex-col lg:flex-row gap-8 my-6">
+          <div className="flex flex-col-reverse lg:flex-row gap-8 my-6">
             <div className="flex-grow">
               <Typography
                 variant="h6"
