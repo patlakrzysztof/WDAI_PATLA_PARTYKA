@@ -38,6 +38,9 @@ export default function UserOrders() {
             sentDate: order.sentDate ? new Date(order.sentDate) : null,
             inDate: order.inDate ? new Date(order.inDate) : null,
           }));
+          formattedOrders.sort(
+            (a, b) => b.orderDate.getTime() - a.orderDate.getTime(),
+          );
           setOrders(formattedOrders);
         }
       } catch (e) {
@@ -66,7 +69,7 @@ export default function UserOrders() {
   return (
     <Card
       elevation={5}
-      className="grow max-w-[800px] rounded-lg overflow-hidden bg-white h-fit"
+      className="grow max-w-[800px]  rounded-lg overflow-hidden bg-white h-fit"
     >
       <Box className="p-4">
         <Typography variant="h6" color="primary" sx={{ fontWeight: "bold" }}>
@@ -79,7 +82,15 @@ export default function UserOrders() {
             <TableRow>
               <TableCell className="bg-secondary">Date</TableCell>
               <TableCell className="bg-secondary">Status</TableCell>
-              <TableCell className="bg-secondary">Total</TableCell>
+              <TableCell
+                className="bg-secondary"
+                sx={{
+                  display: "none",
+                  "@media (min-width: 430px)": { display: "table-cell" },
+                }}
+              >
+                Total
+              </TableCell>
               <TableCell className="bg-secondary" align="right">
                 Action
               </TableCell>
@@ -105,7 +116,14 @@ export default function UserOrders() {
                       {status.toUpperCase()}
                     </Box>
                   </TableCell>
-                  <TableCell>${total.toFixed(2)}</TableCell>
+                  <TableCell
+                    sx={{
+                      display: "none",
+                      "@media (min-width: 430px)": { display: "table-cell" },
+                    }}
+                  >
+                    ${total.toFixed(2)}
+                  </TableCell>
                   <TableCell align="right">
                     <Button size="small" variant="outlined" color="primary">
                       <Link to={`/orders/${order.orderId}`}>Details</Link>

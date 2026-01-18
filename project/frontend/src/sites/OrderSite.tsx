@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import type { Address, CartItem, User } from "../types";
 import {
@@ -40,7 +40,7 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
   ) => {
     setAddress((prev) => ({ ...prev, [field]: value }));
   };
-
+  const navigate = useNavigate();
   async function finaliseOrder() {
     if (!user) return alert("User not logged in");
     if (!contactPhone) return alert("Please enter your contact number");
@@ -80,7 +80,7 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
         const errorData = await response.json();
         throw new Error(errorData.error || "Failed to create order");
       }
-
+      const createdOrder = await response.json();
       alert("Order successfully created!");
       for (const product of inCartItems) {
         try {
@@ -97,6 +97,7 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
           console.error(err);
         }
       }
+      navigate(`../orders/${createdOrder.id}`);
     } catch (err: any) {
       console.error(err);
       alert("Error creating order: " + err.message);

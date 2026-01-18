@@ -71,7 +71,16 @@ function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartProps) {
           sx={{ backgroundColor: "primary.main" }}
         >
           <CardContent className="flex flex-col justify-center items-center gap-10">
-            <Typography variant="h3" color="textSecondary">
+            <Typography
+              variant="h3"
+              color="textSecondary"
+              sx={{
+                fontSize: {
+                  xs: "2rem",
+                  md: "3rem",
+                },
+              }}
+            >
               YOUR SHOPPING CART :
             </Typography>
           </CardContent>
@@ -121,7 +130,16 @@ function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartProps) {
             </Card>
           ))
         ) : (
-          <Typography variant="h2" color="primary">
+          <Typography
+            variant="h2"
+            color="primary"
+            sx={{
+              fontSize: {
+                xs: "2rem",
+                md: "3rem",
+              },
+            }}
+          >
             Shopping Cart is Empty :(
           </Typography>
         )}

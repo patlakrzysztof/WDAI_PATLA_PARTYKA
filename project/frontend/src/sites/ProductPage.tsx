@@ -46,7 +46,7 @@ function ProductPage({
   const product = products.find(
     (product) => slugify(product.title) === productName,
   );
-  const [quantity, setQuantity] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
   const [newRating, setNewRating] = useState<number | null>(0);
@@ -164,9 +164,15 @@ function ProductPage({
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-5">
+    <div className="flex flex-col justify-center items-center gap-5 px-2 md:px-0">
       <div className="flex justify-center items-center gap-5">
-        <Card variant="outlined" sx={{ maxWidth: 700 }}>
+        <Card
+          variant="outlined"
+          sx={{
+            width: "100%",
+            maxWidth: 700,
+          }}
+        >
           <CardContent sx={{ p: 2 }}>
             <div className="flex flex-row items-center justify-between gap-5">
               <Typography gutterBottom variant="h5" component="div">
@@ -174,11 +180,11 @@ function ProductPage({
               </Typography>
             </div>
             <Divider />
-            <div className="flex flex-row gap-10 mt-5">
+            <div className="flex flex-col md:flex-row gap-6 mt-5">
               <img
                 src={product.image}
                 alt={product.title}
-                className="w-80 h-80 object-contain mb-5"
+                className="w-full max-w-[280px] md:max-w-[320px] h-auto object-contain mx-auto"
               />
               <div className="flex flex-col justify-between">
                 <Typography gutterBottom variant="h6" component="div">
@@ -195,8 +201,9 @@ function ProductPage({
                     id="quantity-input"
                     sx={{ m: 1, width: "10ch" }}
                     color="primary"
+                    defaultValue={1}
                     focused
-                    inputProps={{ min: 0, max: 15, step: 1 }}
+                    inputProps={{ min: 1, max: 15, step: 1 }}
                     onChange={(val) => setQuantity(Number(val.target.value))}
                     disabled={inCartItems.some(
                       (item) => item.id === product.id,
@@ -238,7 +245,10 @@ function ProductPage({
         <Typography variant="h5">Customer Reviews</Typography>
         <div className="mt-5">
           <Paper square>
-            <Card variant="outlined" sx={{ maxWidth: 700, mt: 2 }}>
+            <Card
+              variant="outlined"
+              sx={{ width: "100%", maxWidth: 700, mt: 2 }}
+            >
               <CardContent>
                 <Typography variant="h6">Add your review:</Typography>
                 <Rating
@@ -274,7 +284,7 @@ function ProductPage({
                 </Button>
               </CardContent>
             </Card>
-            <List sx={{ mb: 2, width: 700 }}>
+            <List sx={{ mb: 2, width: "100%", maxWidth: 700 }}>
               {reviews.map(({ id, username, message, rating }) => (
                 <React.Fragment key={id}>
                   <ListItemButton>
