@@ -33,10 +33,7 @@ async function ordersInit() {
             priceAtPurchase: 39.99,
           },
         ],
-        shipment: {
-          method: "standard",
-          cost: 10,
-        },
+        shipment: 10,
         address: {
           country: "Poland",
           city: "Krakow",
@@ -60,10 +57,7 @@ async function ordersInit() {
             priceAtPurchase: 55.99,
           },
         ],
-        shipment: {
-          method: "express",
-          cost: 15,
-        },
+        shipment: 15,
         address: {
           country: "Poland",
           city: "Warsaw",
@@ -87,10 +81,7 @@ async function ordersInit() {
             priceAtPurchase: 695.0,
           },
         ],
-        shipment: {
-          method: "standard",
-          cost: 10,
-        },
+        shipment: 10,
         address: {
           country: "Poland",
           city: "Krakow",

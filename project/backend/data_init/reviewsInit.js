@@ -31,7 +31,7 @@ async function reviewsInit() {
       const reviewsCount = Math.floor(Math.random() * 5) + 1;
 
       for (let i = 0; i < reviewsCount; i++) {
-        const rating = parseFloat((Math.random() * 5).toFixed(1));
+        const rating = parseFloat((Math.random() * 4).toFixed(1) + 1);
         const message = messages[Math.floor(Math.random() * messages.length)];
         const isAnonymous = Math.random() < 0.75;
         const username = isAnonymous

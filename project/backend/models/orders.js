@@ -47,7 +47,7 @@ const Orders = sequelize.define(
       },
     },
     shipment: {
-      type: DataTypes.JSON,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     address: {
@@ -63,7 +63,7 @@ const Orders = sequelize.define(
             !value.houseNumber
           ) {
             throw new Error(
-              "Address must contain street, city, postalCode and houseNumber"
+              "Address must contain street, city, postalCode and houseNumber",
             );
           }
         },
@@ -76,7 +76,7 @@ const Orders = sequelize.define(
   },
   {
     timestamps: false,
-  }
+  },
 );
 
 module.exports = Orders;
