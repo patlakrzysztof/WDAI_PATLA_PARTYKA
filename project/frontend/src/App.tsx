@@ -17,14 +17,15 @@ import OrderDetails from "./sites/OrderDetails";
 import ProfilePage from "./sites/profile/ProfilePage";
 
 //types
-import type { Product, User } from "./types";
-import type { CartItem } from "./types";
+import { type Product, type User } from "./types";
+import type { CartItem, Review } from "./types";
 import OrderSite from "./sites/OrderSite";
 
 function App() {
   const [inCartItems, setInCartItems] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [user, setUser] = useState<User | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:3002/api/products")

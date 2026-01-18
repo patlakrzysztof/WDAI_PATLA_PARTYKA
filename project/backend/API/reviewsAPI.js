@@ -14,6 +14,15 @@ router.use(
   }),
 );
 
+router.get("/", async (req, res) => {
+  try {
+    const reviews = await Reviews.findAll();
+    res.json(reviews);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.post("/", async (req, res) => {
   const review = req.body;
   if (!review.productId || !review.rating)
@@ -44,23 +53,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:productId", async (req, res) => {
-  const productId = req.params.productId;
-  if (!productId) return res.status(400).json({ error: "No productId given" });
-
-  try {
-    const product = await Products.findOne({ where: { id: productId } });
-    if (!product)
-      return res.status(400).json({ error: "no products with this id" });
-
-    const reviews = await Reviews.findAll({ where: { productId: productId } });
-
-    res.json(reviews);
-  } catch (e) {
-    return res.status(400).json({ error: e.message });
-  }
-});
-
 router.get("/rating/:productId", async (req, res) => {
   const productId = req.params.productId;
   if (!productId) return res.status(400).json({ error: "No productId given" });
@@ -85,6 +77,23 @@ router.get("/rating/:productId", async (req, res) => {
       average: average,
       count: count,
     });
+  } catch (e) {
+    return res.status(400).json({ error: e.message });
+  }
+});
+
+router.get("/:productId", async (req, res) => {
+  const productId = req.params.productId;
+  if (!productId) return res.status(400).json({ error: "No productId given" });
+
+  try {
+    const product = await Products.findOne({ where: { id: productId } });
+    if (!product)
+      return res.status(400).json({ error: "no products with this id" });
+
+    const reviews = await Reviews.findAll({ where: { productId: productId } });
+
+    res.json(reviews);
   } catch (e) {
     return res.status(400).json({ error: e.message });
   }
