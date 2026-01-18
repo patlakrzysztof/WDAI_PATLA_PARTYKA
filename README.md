@@ -103,3 +103,7 @@ Umożliwia podgląd danych osobowych oraz bezpieczne wylogowanie.
 Pełna historia zamówień pobierana z bazy danych.
 
 _Dla użytkowników testowych generowane są przykładowe zamówienia (historia)._
+
+### Dokumentacja Postman ~ Krzysztof Patla
+
+Podstawowe zapytania i operacje na produktach i ocenach
