@@ -12,8 +12,6 @@ async function fetchProducts() {
         description: p.description,
         category: p.category,
         image: p.image,
-        rating_rate: p.rating?.rate ?? 0,
-        rating_count: p.rating?.count ?? 0,
       });
     }
 

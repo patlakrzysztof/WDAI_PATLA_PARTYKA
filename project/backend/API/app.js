@@ -8,6 +8,7 @@ const usersRoutes = require("./usersAPI");
 const productsRoutes = require("./productsAPI");
 const cartRoutes = require("./cartAPI");
 const ordersRoutes = require("./ordersAPI");
+const reviewsRoutes = require("./reviewsAPI");
 
 const ProductsDB = require("../models/products");
 const Users = require("../models/users");
@@ -33,6 +34,7 @@ app.use("/users", usersRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/orders", ordersRoutes);
+app.use("/reviews", reviewsRoutes);
 
 sequelize.sync().then(async () => {
   app.listen(3002, () => {

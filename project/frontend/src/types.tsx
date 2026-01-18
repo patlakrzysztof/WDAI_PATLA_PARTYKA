@@ -15,10 +15,10 @@ export interface CartItem extends Product {
 
 export interface Review {
   id: number;
-  person: string;
-  text: string;
+  username: string;
+  productId: number;
+  message: string | null;
   rating: number;
-  avatar: string;
 }
 
 export interface User {
