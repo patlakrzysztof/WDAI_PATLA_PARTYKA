@@ -17,6 +17,8 @@ const Orders = require("../models/orders");
 const fetchProducts = require("../data_init/productsInit");
 const usersInit = require("../data_init/usersInit");
 const ordersInit = require("../data_init/ordersInit");
+const Reviews = require("../models/reviews");
+const reviewsInit = require("../data_init/reviewsInit");
 
 const app = express();
 
@@ -49,4 +51,7 @@ sequelize.sync().then(async () => {
 
   const ordersCount = await Orders.count();
   if (ordersCount === 0) await ordersInit();
+
+  const reviewsCount = await Reviews.count();
+  if (reviewsCount === 0) await reviewsInit();
 });

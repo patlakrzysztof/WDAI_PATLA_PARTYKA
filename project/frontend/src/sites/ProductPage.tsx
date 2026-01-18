@@ -115,7 +115,7 @@ function ProductPage({
           productId: product?.id,
           rating: newRating,
           message: newMessage,
-          username: newUsername,
+          username: user?.nickname ?? newUsername,
         }),
       });
 
@@ -131,7 +131,7 @@ function ProductPage({
         ...prev,
         {
           id: data.reviewId,
-          username: newUsername || "Anonymous",
+          username: user?.nickname || newUsername || "Anonymous",
           productId: product!.id,
           rating: newRating,
           message: newMessage,
