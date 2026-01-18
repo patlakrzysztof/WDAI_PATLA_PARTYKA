@@ -127,7 +127,6 @@ function App() {
           path="/cart"
           element={
             <ShoppingCart
-              user={user}
               inCartItems={inCartItems}
               setInCartItems={setInCartItems}
             />

@@ -11,20 +11,15 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 
 //types
-import type { CartItem, User } from "../types";
+import type { CartItem } from "../types";
 import { Link } from "react-router-dom";
 
 interface ShoppingCartProps {
-  user: User | null;
   inCartItems: CartItem[];
   setInCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
-function ShoppingCart({
-  user,
-  inCartItems,
-  setInCartItems,
-}: ShoppingCartProps) {
+function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartProps) {
   const handleQuantityChange = async (product: CartItem, quantity: number) => {
     if (quantity < 1 || quantity > 15) {
       alert("You can purchase only 1–15 items of this product");

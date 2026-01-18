@@ -1,12 +1,10 @@
 import { useParams } from "react-router-dom";
 import {
-  Avatar,
   Card,
   CardContent,
   Divider,
   IconButton,
   List,
-  ListItemAvatar,
   ListItemButton,
   ListItemText,
   Paper,
@@ -112,24 +110,24 @@ function ProductPage({
   const reviews: Review[] = [
     {
       id: 1,
-      person: "Jack",
-      text: "not bad",
-      rating: 4.5,
-      avatar: "/static/images/avatar/5.jpg",
+      username: "Jack",
+      productId: product.id,
+      message: "Cool",
+      rating: 3.5,
     },
     {
       id: 2,
-      person: "Brad",
-      text: `Very good present`,
+      username: "Brad",
+      productId: product.id,
+      message: `Very good present`,
       rating: 4,
-      avatar: "/static/images/avatar/1.jpg",
     },
     {
       id: 3,
-      person: "Will",
-      text: "I don't like this",
+      username: "Will",
+      productId: product.id,
+      message: "I don't like this",
       rating: 2,
-      avatar: "/static/images/avatar/2.jpg",
     },
   ];
 
@@ -209,23 +207,20 @@ function ProductPage({
         <div className="mt-5">
           <Paper square>
             <List sx={{ mb: 2, width: 700 }}>
-              {reviews.map(({ id, person, text, rating, avatar }) => (
+              {reviews.map(({ id, username, message, rating }) => (
                 <React.Fragment key={id}>
                   <ListItemButton>
-                    <ListItemAvatar>
-                      <Avatar alt="Profile Picture" src={avatar} />
-                    </ListItemAvatar>
                     <ListItemText
                       primary={
                         <Typography
                           sx={{ color: "text.primary", fontWeight: 600 }}
                         >
-                          {person}
+                          {username}
                         </Typography>
                       }
                       secondary={
                         <Typography sx={{ color: "text.primary" }}>
-                          {text}
+                          {message}
                         </Typography>
                       }
                     />
