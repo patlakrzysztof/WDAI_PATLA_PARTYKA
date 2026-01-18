@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import {
+  Button,
   Card,
   CardContent,
   Divider,
@@ -13,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //types
@@ -46,6 +47,18 @@ function ProductPage({
     (product) => slugify(product.title) === productName,
   );
   const [quantity, setQuantity] = useState<number>(0);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
+  const [newRating, setNewRating] = useState<number | null>(0);
+  const [newUsername, setNewUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!product) return;
+    fetch(`http://localhost:3002/reviews/${product.id}`)
+      .then((res) => res.json())
+      .then((data: Review[]) => setReviews(data))
+      .catch((err) => console.error(err));
+  }, [product]);
 
   const addToCart = async (product: Product) => {
     if (!product) return;
@@ -88,6 +101,50 @@ function ProductPage({
     }
   };
 
+  const submitReview = async () => {
+    if (!newRating || newRating < 0 || newRating > 5) {
+      alert("Rating must be between 0.5 and 5");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3002/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: product?.id,
+          rating: newRating,
+          message: newMessage,
+          username: newUsername,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Failed to add review:", errorData);
+        return;
+      }
+
+      const data = await response.json();
+
+      setReviews((prev) => [
+        ...prev,
+        {
+          id: data.reviewId,
+          username: newUsername || "Anonymous",
+          productId: product!.id,
+          rating: newRating,
+          message: newMessage,
+        },
+      ]);
+      setNewMessage("");
+      setNewRating(0);
+      setNewUsername(null);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (!product) {
     return (
       <div>
@@ -105,31 +162,6 @@ function ProductPage({
       </div>
     );
   }
-
-  //for now it is static for all products (just to make a UI)
-  const reviews: Review[] = [
-    {
-      id: 1,
-      username: "Jack",
-      productId: product.id,
-      message: "Cool",
-      rating: 3.5,
-    },
-    {
-      id: 2,
-      username: "Brad",
-      productId: product.id,
-      message: `Very good present`,
-      rating: 4,
-    },
-    {
-      id: 3,
-      username: "Will",
-      productId: product.id,
-      message: "I don't like this",
-      rating: 2,
-    },
-  ];
 
   return (
     <div className="flex flex-col justify-center items-center gap-5">
@@ -206,6 +238,42 @@ function ProductPage({
         <Typography variant="h5">Customer Reviews</Typography>
         <div className="mt-5">
           <Paper square>
+            <Card variant="outlined" sx={{ maxWidth: 700, mt: 2 }}>
+              <CardContent>
+                <Typography variant="h6">Add your review:</Typography>
+                <Rating
+                  name="new-rating"
+                  value={newRating}
+                  precision={0.5}
+                  onChange={(_, value) => setNewRating(value)}
+                />
+                <TextField
+                  label="Username (optional)"
+                  fullWidth
+                  value={newUsername}
+                  placeholder="Username (optional)"
+                  onChange={(e) => setNewUsername(e.target.value)}
+                />
+                <TextField
+                  label="Review"
+                  fullWidth
+                  multiline
+                  rows={3}
+                  value={newMessage}
+                  placeholder="Your message..."
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  sx={{ mt: 2 }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                  onClick={submitReview}
+                >
+                  Submit Review
+                </Button>
+              </CardContent>
+            </Card>
             <List sx={{ mb: 2, width: 700 }}>
               {reviews.map(({ id, username, message, rating }) => (
                 <React.Fragment key={id}>
