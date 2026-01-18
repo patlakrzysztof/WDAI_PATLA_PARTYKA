@@ -1,12 +1,11 @@
 import { useParams } from "react-router-dom";
 import {
-  Avatar,
+  Button,
   Card,
   CardContent,
   Divider,
   IconButton,
   List,
-  ListItemAvatar,
   ListItemButton,
   ListItemText,
   Paper,
@@ -15,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //types
@@ -45,14 +44,30 @@ function ProductPage({
       .replace(/[^\w-]+/g, "");
 
   const product = products.find(
-    (product) => slugify(product.title) === productName
+    (product) => slugify(product.title) === productName,
   );
   const [quantity, setQuantity] = useState<number>(0);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
+  const [newRating, setNewRating] = useState<number | null>(0);
+  const [newUsername, setNewUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!product) return;
+    fetch(`http://localhost:3002/reviews/${product.id}`)
+      .then((res) => res.json())
+      .then((data: Review[]) => setReviews(data))
+      .catch((err) => console.error(err));
+  }, [product]);
 
   const addToCart = async (product: Product) => {
     if (!product) return;
     if (!user) {
       navigate("/profile");
+      return;
+    }
+    if (quantity < 1 || quantity > 15) {
+      alert("You can add only 1–15 items of this product");
       return;
     }
     try {
@@ -86,6 +101,50 @@ function ProductPage({
     }
   };
 
+  const submitReview = async () => {
+    if (!newRating || newRating < 0 || newRating > 5) {
+      alert("Rating must be between 0.5 and 5");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3002/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId: product?.id,
+          rating: newRating,
+          message: newMessage,
+          username: user?.nickname ?? newUsername,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Failed to add review:", errorData);
+        return;
+      }
+
+      const data = await response.json();
+
+      setReviews((prev) => [
+        ...prev,
+        {
+          id: data.reviewId,
+          username: user?.nickname || newUsername || "Anonymous",
+          productId: product!.id,
+          rating: newRating,
+          message: newMessage,
+        },
+      ]);
+      setNewMessage("");
+      setNewRating(0);
+      setNewUsername(null);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   if (!product) {
     return (
       <div>
@@ -103,31 +162,6 @@ function ProductPage({
       </div>
     );
   }
-
-  //for now it is static for all products (just to make a UI)
-  const reviews: Review[] = [
-    {
-      id: 1,
-      person: "Jack",
-      text: "not bad",
-      rating: 4.5,
-      avatar: "/static/images/avatar/5.jpg",
-    },
-    {
-      id: 2,
-      person: "Brad",
-      text: `Very good present`,
-      rating: 4,
-      avatar: "/static/images/avatar/1.jpg",
-    },
-    {
-      id: 3,
-      person: "Will",
-      text: "I don't like this",
-      rating: 2,
-      avatar: "/static/images/avatar/2.jpg",
-    },
-  ];
 
   return (
     <div className="flex flex-col justify-center items-center gap-5">
@@ -165,7 +199,7 @@ function ProductPage({
                     inputProps={{ min: 0, max: 15, step: 1 }}
                     onChange={(val) => setQuantity(Number(val.target.value))}
                     disabled={inCartItems.some(
-                      (item) => item.id === product.id
+                      (item) => item.id === product.id,
                     )}
                   />
                   <IconButton
@@ -173,7 +207,7 @@ function ProductPage({
                     color="primary"
                     aria-label="add to shopping cart"
                     disabled={inCartItems.some(
-                      (item) => item.id === product.id
+                      (item) => item.id === product.id,
                     )}
                   >
                     <AddShoppingCartIcon />
@@ -190,7 +224,7 @@ function ProductPage({
                   readOnly
                   className="mb-3"
                 />
-                ({product.rating_count})
+                ({product.rating_count > 0 ? product.rating_count : 0})
               </div>
               <Typography gutterBottom variant="h4" component="div">
                 {product.price}$
@@ -204,24 +238,57 @@ function ProductPage({
         <Typography variant="h5">Customer Reviews</Typography>
         <div className="mt-5">
           <Paper square>
+            <Card variant="outlined" sx={{ maxWidth: 700, mt: 2 }}>
+              <CardContent>
+                <Typography variant="h6">Add your review:</Typography>
+                <Rating
+                  name="new-rating"
+                  value={newRating}
+                  precision={0.5}
+                  onChange={(_, value) => setNewRating(value)}
+                />
+                <TextField
+                  label="Username (optional)"
+                  fullWidth
+                  value={newUsername}
+                  placeholder="Username (optional)"
+                  onChange={(e) => setNewUsername(e.target.value)}
+                />
+                <TextField
+                  label="Review"
+                  fullWidth
+                  multiline
+                  rows={3}
+                  value={newMessage}
+                  placeholder="Your message..."
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  sx={{ mt: 2 }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                  onClick={submitReview}
+                >
+                  Submit Review
+                </Button>
+              </CardContent>
+            </Card>
             <List sx={{ mb: 2, width: 700 }}>
-              {reviews.map(({ id, person, text, rating, avatar }) => (
+              {reviews.map(({ id, username, message, rating }) => (
                 <React.Fragment key={id}>
                   <ListItemButton>
-                    <ListItemAvatar>
-                      <Avatar alt="Profile Picture" src={avatar} />
-                    </ListItemAvatar>
                     <ListItemText
                       primary={
                         <Typography
                           sx={{ color: "text.primary", fontWeight: 600 }}
                         >
-                          {person}
+                          {username}
                         </Typography>
                       }
                       secondary={
                         <Typography sx={{ color: "text.primary" }}>
-                          {text}
+                          {message}
                         </Typography>
                       }
                     />

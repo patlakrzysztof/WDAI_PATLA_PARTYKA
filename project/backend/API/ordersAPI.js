@@ -13,7 +13,7 @@ router.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
 router.get("/", authenticateToken, async (req, res) => {
@@ -51,6 +51,27 @@ router.get("/:orderId", authenticateToken, async (req, res) => {
 });
 
 router.post("/", authenticateToken, async (req, res) => {
+  const validator = {
+    contact: (v) => {
+      if (v === undefined || v === null || String(v).trim() === "")
+        return { error: "contact is required" };
+      const raw = String(v).trim();
+      const phoneReg = /^\+?(?:\d\s*){6,15}$/;
+
+      if (!phoneReg.test(raw)) return { error: "invalid phone format" };
+      return { value: raw };
+    },
+  };
+
+  const sanitized = {};
+  for (const [field, validate] of Object.entries(validator)) {
+    const result = validate(req.body[field]);
+    if (result?.error) {
+      return res.status(400).json({ error: result.error });
+    }
+    sanitized[field] = result.value;
+  }
+
   try {
     const userId = req.user.id;
     const { orderDate, items, shipment, address, contact } = req.body;
@@ -62,7 +83,7 @@ router.post("/", authenticateToken, async (req, res) => {
       items,
       shipment,
       address,
-      contact,
+      contact: sanitized.contact,
     });
     res.status(201).json(newItem);
   } catch (err) {

@@ -11,21 +11,20 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 
 //types
-import type { CartItem, User } from "../types";
+import type { CartItem } from "../types";
 import { Link } from "react-router-dom";
 
 interface ShoppingCartProps {
-  user: User | null;
   inCartItems: CartItem[];
   setInCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
 }
 
-function ShoppingCart({
-  user,
-  inCartItems,
-  setInCartItems,
-}: ShoppingCartProps) {
+function ShoppingCart({ inCartItems, setInCartItems }: ShoppingCartProps) {
   const handleQuantityChange = async (product: CartItem, quantity: number) => {
+    if (quantity < 1 || quantity > 15) {
+      alert("You can purchase only 1–15 items of this product");
+      return;
+    }
     try {
       await fetch(`http://localhost:3002/api/cart/${product.id}`, {
         method: "PATCH",
@@ -61,7 +60,7 @@ function ShoppingCart({
       acc.totalPrice += item.price * item.quantity;
       return acc;
     },
-    { totalItems: 0, totalPrice: 0 }
+    { totalItems: 0, totalPrice: 0 },
   );
 
   return (
@@ -105,7 +104,7 @@ function ShoppingCart({
                     sx={{ m: 1, width: "10ch" }}
                     color="primary"
                     focused
-                    inputProps={{ min: 0, max: 15, step: 1 }}
+                    inputProps={{ min: 1, max: 15, step: 1 }}
                     onChange={(val) =>
                       handleQuantityChange(product, Number(val.target.value))
                     }

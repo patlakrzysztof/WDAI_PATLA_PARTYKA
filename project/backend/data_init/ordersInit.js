@@ -44,7 +44,7 @@ async function ordersInit() {
           street: "Mickiewicza",
           houseNumber: "30",
         },
-        contact: "123456789",
+        contact: "+48 123456789",
       });
 
       await Orders.create({
@@ -71,7 +71,7 @@ async function ordersInit() {
           street: "Marszalkowska",
           houseNumber: "1",
         },
-        contact: "123456789",
+        contact: "+48 123456789",
       });
 
       await Orders.create({
@@ -98,7 +98,7 @@ async function ordersInit() {
           street: "Mickiewicza",
           houseNumber: "30",
         },
-        contact: "123456789",
+        contact: "+48 123456789",
       });
     }
   } catch (err) {

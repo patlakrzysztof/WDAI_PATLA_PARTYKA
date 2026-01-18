@@ -15,8 +15,15 @@ router.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
+
+const validateQuantity = (q) => {
+  if (q < 1 || q > 15) {
+    return { error: "quantity must be between 1 and 15" };
+  }
+  return { value: q };
+};
 
 router.get("/", authenticateToken, async (req, res) => {
   try {
@@ -27,7 +34,7 @@ router.get("/", authenticateToken, async (req, res) => {
       items.map(async (item) => {
         const product = await ProductsDB.findByPk(item.productId);
         return { ...item.dataValues, product };
-      })
+      }),
     );
 
     res.json(itemsWithProducts);
@@ -40,6 +47,11 @@ router.post("/", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
     const { productId, quantity } = req.body;
+    const q = validateQuantity(quantity);
+    if (q.error) {
+      return res.status(400).json({ error: q.error });
+    }
+
     console.log("BODY:", req.body);
 
     const existing = await CartDB.findOne({ where: { userId, productId } });
@@ -59,6 +71,11 @@ router.patch("/:productId", authenticateToken, async (req, res) => {
     const { productId } = req.params;
     const userId = req.user.id;
     let { quantity } = req.body;
+
+    const q = validateQuantity(quantity);
+    if (q.error) {
+      return res.status(400).json({ error: q.error });
+    }
 
     const item = await CartDB.findOne({ where: { userId, productId } });
     if (!item) return res.status(404).json({ error: "Item not found" });
