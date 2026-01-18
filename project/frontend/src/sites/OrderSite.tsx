@@ -1,6 +1,6 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import React, { useState } from "react";
-import type { Address, CartItem, OrderItem, User } from "../types";
+import type { Address, CartItem, User } from "../types";
 import {
   Button,
   Card,
@@ -10,7 +10,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Form } from "@base-ui/react";
 
 interface OrderSiteProps {
   user: User | null;
@@ -25,7 +24,7 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
     city: "",
     zipCode: "",
     street: "",
-    houseNumber: 0,
+    houseNumber: "",
   });
   const cartSummary = Array.from(inCartItems.values()).reduce(
     (acc, item) => {
@@ -33,11 +32,11 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
       acc.totalPrice += item.price * item.quantity;
       return acc;
     },
-    { totalItems: 0, totalPrice: 0 }
+    { totalItems: 0, totalPrice: 0 },
   );
   const handleAddressChange = (
     field: keyof Address,
-    value: string | number
+    value: string | number,
   ) => {
     setAddress((prev) => ({ ...prev, [field]: value }));
   };
@@ -82,7 +81,6 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
         throw new Error(errorData.error || "Failed to create order");
       }
 
-      const newOrder = await response.json();
       alert("Order successfully created!");
       for (const product of inCartItems) {
         try {
@@ -93,7 +91,7 @@ function OrderSite({ user, inCartItems, setInCartItems }: OrderSiteProps) {
           });
 
           setInCartItems((prev) =>
-            prev.filter((item) => item.id !== productId)
+            prev.filter((item) => item.id !== productId),
           );
         } catch (err) {
           console.error(err);

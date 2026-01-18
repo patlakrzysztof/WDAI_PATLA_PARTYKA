@@ -17,18 +17,34 @@ import OrderDetails from "./sites/OrderDetails";
 import ProfilePage from "./sites/profile/ProfilePage";
 
 //types
-import type { Product, User } from "./types";
-import type { CartItem } from "./types";
+import { type Product, type User } from "./types";
+import type { CartItem, Rating, Review } from "./types";
 import OrderSite from "./sites/OrderSite";
 
 function App() {
   const [inCartItems, setInCartItems] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [user, setUser] = useState<User | null>(null);
+  const [reviews, setReviews] = useState<Rating[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3002/reviews/rating")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch ratings");
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Fetched ratings:", data);
+        setReviews(data);
+      });
+  }, []);
 
   useEffect(() => {
     fetch("http://localhost:3002/api/products")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch products");
+        return res.json();
+      })
       .then((data) => {
         console.log("Fetched products:", data);
         const mappedProducts: Product[] = data.map((product: Product) => ({
@@ -38,13 +54,17 @@ function App() {
           description: product.description,
           category: product.category,
           image: product.image,
-          rating_rate: product.rating_rate,
-          rating_count: product.rating_count,
+          rating_rate:
+            reviews.find((item) => item.productId === product.id)
+              ?.rating_rate ?? 0,
+          rating_count:
+            reviews.find((item) => item.productId === product.id)
+              ?.rating_count ?? 0,
         }));
         setProducts(mappedProducts);
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [reviews]);
 
   useEffect(() => {
     fetch("http://localhost:3002/users/me", {
@@ -129,7 +149,6 @@ function App() {
           path="/cart"
           element={
             <ShoppingCart
-              user={user}
               inCartItems={inCartItems}
               setInCartItems={setInCartItems}
             />

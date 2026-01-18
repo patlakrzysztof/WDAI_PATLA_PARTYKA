@@ -34,23 +34,13 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const {
-      title,
-      price,
-      description,
-      category,
-      image,
-      rating_rate,
-      rating_count,
-    } = req.body;
+    const { title, price, description, category, image } = req.body;
     if (
       title == null ||
       price == null ||
       description == null ||
       category == null ||
-      image == null ||
-      rating_rate == null ||
-      rating_count == null
+      image == null
     ) {
       return res.status(400).json({ error: "Wrong Data" });
     }
@@ -60,8 +50,6 @@ router.post("/", async (req, res) => {
       description,
       category,
       image,
-      rating_rate,
-      rating_count,
     });
     res.status(201).json({ id: newProduct.id });
   } catch (err) {
@@ -96,28 +84,4 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-async function fetchProducts() {
-  try {
-    const response = await fetch("https://fakestoreapi.com/products");
-    const products = await response.json();
-
-    for (const p of products) {
-      await ProductsDB.create({
-        title: p.title,
-        price: p.price,
-        description: p.description,
-        category: p.category,
-        image: p.image,
-        rating_rate: p.rating?.rate ?? 0,
-        rating_count: p.rating?.count ?? 0,
-      });
-    }
-
-    console.log({ message: "Products imported" });
-  } catch (err) {
-    console.error({ "Importing products failed": err.message });
-  }
-}
-
 module.exports = router;
-module.exports.fetchProducts = fetchProducts;

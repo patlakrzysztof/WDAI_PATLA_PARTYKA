@@ -13,12 +13,18 @@ export interface CartItem extends Product {
   quantity: number;
 }
 
+export interface Rating {
+  productId: number;
+  rating_rate: number;
+  rating_count: number;
+}
+
 export interface Review {
   id: number;
-  person: string;
-  text: string;
+  username: string;
+  productId: number;
+  message: string | null;
   rating: number;
-  avatar: string;
 }
 
 export interface User {
@@ -35,7 +41,7 @@ export interface Address {
   city: string;
   zipCode: string;
   street: string;
-  houseNumber: number;
+  houseNumber: string;
 }
 
 export interface OrderItem {
@@ -52,7 +58,10 @@ export interface Order {
   sentDate: Date | null;
   inDate: Date | null;
   items: OrderItem[];
-  shipment: number;
+  shipment: {
+    method: string;
+    cost: number;
+  };
   address: Address;
   contact: string;
 }

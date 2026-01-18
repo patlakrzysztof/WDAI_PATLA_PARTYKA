@@ -32,7 +32,7 @@ function Products({ products }: ProductsProps) {
 
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
+  ))(() => ({
     [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: "#f5f5f9",
       color: "#000000",
@@ -44,7 +44,7 @@ function Products({ products }: ProductsProps) {
 
   const filteredProducts = products
     .filter((product) =>
-      product.title.toLowerCase().includes(search.toLowerCase())
+      product.title.toLowerCase().includes(search.toLowerCase()),
     )
     .sort((a, b) => {
       if (sort === "asc") return a.price - b.price;
@@ -123,7 +123,7 @@ function Products({ products }: ProductsProps) {
                   | "desc"
                   | "asc-rate"
                   | "desc-rate"
-                  | "bestsellers"
+                  | "bestsellers",
               )
             }
           >
@@ -166,7 +166,7 @@ function Products({ products }: ProductsProps) {
                     readOnly
                     className="mb-3"
                   />
-                  ({product.rating_count})
+                  ({product.rating_count > 0 ? product.rating_count : 0})
                   <Divider />
                   <img
                     src={product.image}
