@@ -52,7 +52,7 @@ Reprezentacyjna strona startowa sklepu.
 
 ### Strona sklepu ~ Krzysztof Patla
 
-Przegląd dostępnych produktów z możliwością filtracji/wyszukiwania.
+Przegląd dostępnych produktów z możliwością filtrowania/wyszukiwania.
 
 _Produkty są automatycznie pobierane z zewnętrznego API (fakestoreapi.com) przy pierwszym uruchomieniu serwera, jeśli baza danych jest pusta._
 
@@ -64,11 +64,11 @@ Szczegółowe informacje o wybranym produkcie.
 
 System wystawiania i wyświetlania ocen produktów.
 
-_Oceny są generowane losowo._
+_Oceny niezarejestrowanych użytkowników są generowane losowo._
 
 ### Koszyk ~ Krzysztof Patla
 
-Zarządzanie produktami w koszyku (dodawanie, usuwanie, zmienianie ilości, podsumowanie).
+Zarządzanie produktami w koszyku (dodawanie, usuwanie, zmiana ilości elementów, podsumowanie).
 
 ### Dodawanie zamówień ~ Krzysztof Patla
 
