@@ -20,11 +20,15 @@ const CartDB = sequelize.define(
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      validate: {
+        min: 1,
+        max: 15,
+      },
     },
   },
   {
     timestamps: false,
-  }
+  },
 );
 
 module.exports = CartDB;

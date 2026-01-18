@@ -45,7 +45,7 @@ function ProductPage({
       .replace(/[^\w-]+/g, "");
 
   const product = products.find(
-    (product) => slugify(product.title) === productName
+    (product) => slugify(product.title) === productName,
   );
   const [quantity, setQuantity] = useState<number>(0);
 
@@ -53,6 +53,10 @@ function ProductPage({
     if (!product) return;
     if (!user) {
       navigate("/profile");
+      return;
+    }
+    if (quantity < 1 || quantity > 15) {
+      alert("You can add only 1–15 items of this product");
       return;
     }
     try {
@@ -165,7 +169,7 @@ function ProductPage({
                     inputProps={{ min: 0, max: 15, step: 1 }}
                     onChange={(val) => setQuantity(Number(val.target.value))}
                     disabled={inCartItems.some(
-                      (item) => item.id === product.id
+                      (item) => item.id === product.id,
                     )}
                   />
                   <IconButton
@@ -173,7 +177,7 @@ function ProductPage({
                     color="primary"
                     aria-label="add to shopping cart"
                     disabled={inCartItems.some(
-                      (item) => item.id === product.id
+                      (item) => item.id === product.id,
                     )}
                   >
                     <AddShoppingCartIcon />
