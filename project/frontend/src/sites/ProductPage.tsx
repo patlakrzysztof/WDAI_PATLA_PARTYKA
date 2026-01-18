@@ -46,7 +46,7 @@ function ProductPage({
   const product = products.find(
     (product) => slugify(product.title) === productName,
   );
-  const [quantity, setQuantity] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
   const [newRating, setNewRating] = useState<number | null>(0);
@@ -195,8 +195,9 @@ function ProductPage({
                     id="quantity-input"
                     sx={{ m: 1, width: "10ch" }}
                     color="primary"
+                    defaultValue={1}
                     focused
-                    inputProps={{ min: 0, max: 15, step: 1 }}
+                    inputProps={{ min: 1, max: 15, step: 1 }}
                     onChange={(val) => setQuantity(Number(val.target.value))}
                     disabled={inCartItems.some(
                       (item) => item.id === product.id,

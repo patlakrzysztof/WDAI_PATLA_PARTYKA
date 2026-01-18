@@ -7,12 +7,12 @@ function HomePage() {
   return (
     <div className="flex flex-col w-screen h-screen">
       <Card
-        className="flex justify-center p-10 w-screen h-1/2"
+        className="flex justify-center p-10 w-screen"
         sx={{ backgroundColor: "primary.main" }}
       >
         <CardContent className="flex flex-col justify-center items-center gap-10">
           <Typography variant="h3" color="textSecondary">
-            NAME OF THE SHOP
+            Pat & Par
           </Typography>
           <Typography variant="h6" color="textSecondary">
             We are the best online shop that u can imagine!
