@@ -4,6 +4,8 @@
 
 Aplikacja jest kompletnym sklepem internetowym umożliwiającym przeglądanie produktów, dodawanie ich do koszyka, dodawanie ocen do produktów, składanie zamówień oraz zarządzanie kontem użytkownika.
 
+GitHub: https://github.com/patlakrzysztof/WDAI_PATLA_PARTYKA.git
+
 ### Autorzy
 
 Krzysztof Patla & Mateusz Partyka
