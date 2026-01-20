@@ -14,7 +14,7 @@ router.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 router.use(express.json());
 router.use(cookieParser());
@@ -161,7 +161,7 @@ router.post("/login", async (req, res) => {
       const token = jwt.sign(
         { id: loginUser.id, mail: loginUser.mail },
         jwtKey,
-        { expiresIn: "2h" }
+        { expiresIn: "2h" },
       );
       res.cookie("token", token, {
         httpOnly: true,
@@ -185,7 +185,10 @@ router.post("/logout", authenticateToken, (req, res) => {
 
 router.get("/me", authenticateToken, async (req, res) => {
   try {
-    const user = await Users.findOne({ where: { id: req.user.id } });
+    const user = await Users.findOne({
+      where: { id: req.user.id },
+      attributes: { exclude: ["password"] },
+    });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
