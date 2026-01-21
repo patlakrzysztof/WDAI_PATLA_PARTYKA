@@ -108,4 +108,8 @@ _Dla użytkowników testowych generowane są przykładowe zamówienia (historia)
 
 ### Dokumentacja Postman ~ Krzysztof Patla
 
-Podstawowe zapytania i operacje na produktach i ocenach
+Podstawowe zapytania i operacje na produktach, ocenach i koszyku
+
+### Dokumentacja Postman ~ Mateusz Partyka
+
+Podstawowe zapytania i operacje na użytkownikach i zamówieniach
